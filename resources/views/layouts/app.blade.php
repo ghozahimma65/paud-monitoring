@@ -1,55 +1,77 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PAUD Monitoring - Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            display: flex;
-        }
-        .sidebar {
-            width: 220px;
-            min-height: 100vh;
-            background: #2c3e50;
-            color: white;
-            padding: 20px 10px;
-        }
-        .sidebar a {
-            display: block;
-            padding: 10px;
-            margin: 5px 0;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .sidebar a:hover {
-            background: #34495e;
-        }
-        .content {
-            flex: 1;
-            padding: 20px;
-            background: #f5f6fa;
-        }
-    </style>
+    <title>Simpaud Kartoharjo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="sidebar">
-        <h4 class="text-center">Admin</h4>
-        <hr>
-        <a href="{{ route('dashboard') }}">📊 Dashboard</a>
-        <a href="#">👩‍🏫 Guru</a>
-        <a href="#">👨‍👩‍👧 Wali Murid</a>
-        <a href="#">🏫 Kelas</a>
-        <a href="#">👧👦 Siswa</a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-danger w-100 mt-3">Logout</button>
-        </form>
+<body class="flex bg-gray-100 font-sans">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-green-600 text-white min-h-screen p-6 shadow-xl">
+        <h2 class="text-2xl font-bold mb-10">Simpaud Kartoharjo</h2>
+
+        <nav class="space-y-4 text-sm">
+            <a href="{{ route('dashboard') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
+                <i class="fas fa-home mr-3"></i> Home
+            </a>
+
+            <div>
+                <p class="font-semibold uppercase text-xs mb-2">Data Master</p>
+                <ul class="ml-4 space-y-1">
+                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">👨‍🏫 Guru</a></li>
+                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">👪 Wali Murid</a></li>
+                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">🧒 Peserta Didik</a></li>
+                </ul>
+            </div>
+
+            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
+                <i class="fas fa-chart-line mr-3"></i> Laporan Perkembangan
+            </a>
+
+            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
+                <i class="fas fa-bullhorn mr-3"></i> Menu Pengumuman
+            </a>
+
+            <div>
+                <p class="font-semibold uppercase text-xs mb-2">Menu Akun</p>
+                <ul class="ml-4 space-y-1">
+                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">👨‍🏫 Guru</a></li>
+                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">👪 Wali Murid</a></li>
+                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">🧒 Peserta Didik</a></li>
+                </ul>
+            </div>
+
+            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
+                <i class="fas fa-bus mr-3"></i> Penjemputan
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+        
+        <!-- Navbar -->
+        <header class="flex items-center justify-between bg-white px-6 py-4 shadow">
+            <h1 class="text-lg font-semibold">Hai, Admin 👋</h1>
+            <div class="flex items-center space-x-4">
+                <input type="text" placeholder="Search Class, Documents, Activities..." 
+                       class="px-4 py-2 rounded-lg border focus:ring-2 focus:ring-green-400 w-72 text-sm">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="p-6">
+            @yield('content')
+        </main>
     </div>
 
-    <div class="content">
-        @yield('content')
-    </div>
 </body>
 </html>

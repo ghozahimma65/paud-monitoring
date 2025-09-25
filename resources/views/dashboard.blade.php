@@ -1,43 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2 class="mb-4">Dashboard Admin</h2>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Guru</h5>
-                    <p class="card-text fs-3">{{ $guruCount }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Wali Murid</h5>
-                    <p class="card-text fs-3">{{ $waliCount }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Kelas</h5>
-                    <p class="card-text fs-3">{{ $kelasCount }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-white bg-danger mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Siswa</h5>
-                    <p class="card-text fs-3">{{ $siswaCount }}</p>
-                </div>
-            </div>
-        </div>
+    <!-- Pengumuman -->
+    <div class="bg-white p-6 rounded-xl shadow">
+        <h2 class="font-bold text-gray-800 mb-3">📢 Pengumuman</h2>
+        <p>{{ $pengumuman ?? 'Belum ada pengumuman.' }}</p>
     </div>
+
+    <!-- Jadwal -->
+    <div class="bg-white p-6 rounded-xl shadow">
+        <div class="flex justify-between items-center mb-3">
+            <h2 class="font-bold text-gray-800">📅 Jadwal</h2>
+            <a href="#" class="text-sm text-red-500 hover:underline">See all</a>
+        </div>
+        <p>🔔 {{ $jadwal ?? 'Belum ada jadwal.' }}</p>
+    </div>
+
+    <!-- Aktivitas Peserta Didik -->
+    <div class="bg-white p-6 rounded-xl shadow">
+        <div class="flex justify-between items-center mb-3">
+            <h2 class="font-bold text-gray-800">🧒 Aktivitas Peserta Didik</h2>
+            <a href="#" class="text-sm text-red-500 hover:underline">See all</a>
+        </div>
+        <ul class="space-y-3">
+            @forelse ($aktivitas as $a)
+                <li class="flex items-center justify-between border-b pb-2">
+                    <span>{{ $a['nama'] }}</span>
+                    <span class="text-sm text-gray-500">{{ $a['waktu'] }}</span>
+                </li>
+            @empty
+                <li>Belum ada aktivitas.</li>
+            @endforelse
+        </ul>
+    </div>
+
+</div>
 @endsection
