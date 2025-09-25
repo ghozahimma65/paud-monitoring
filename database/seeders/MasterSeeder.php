@@ -8,59 +8,70 @@ use App\Models\Kelas;
 use App\Models\Guru;
 use App\Models\WaliMurid;
 use App\Models\Siswa;
+use Illuminate\Support\Facades\Hash;
 
 class MasterSeeder extends Seeder
 {
     public function run(): void
     {
-        // Admin user
-        User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@paud.com',
-            'password' => bcrypt('123456'),
-            'role' => 'admin',
-        ]);
+        // Admin
+        $admin = User::updateOrCreate(
+            ['email' => 'admin@paud.com'],
+            [
+                'name' => 'Super Admin',
+                'password' => Hash::make('123456'),
+                'role' => 'admin',
+            ]
+        );
 
-        // Guru user
-        $guruUser = User::create([
-            'name' => 'Bu Guru',
-            'email' => 'guru@paud.com',
-            'password' => bcrypt('123456'),
-            'role' => 'guru',
-        ]);
-        $guru = Guru::create([
-            'user_id' => $guruUser->id,
-            'bidang' => 'Pengajar TK'
-        ]);
+        // Guru
+        $guruUser = User::updateOrCreate(
+            ['email' => 'guru@paud.com'],
+            [
+                'name' => 'Bu Guru',
+                'password' => Hash::make('123456'),
+                'role' => 'guru',
+            ]
+        );
+        Guru::updateOrCreate(
+            ['user_id' => $guruUser->id],
+            ['bidang' => 'Pengajar TK']
+        );
 
-        // Wali murid user
-        $waliUser = User::create([
-            'name' => 'Pak Budi',
-            'email' => 'wali@paud.com',
-            'password' => bcrypt('123456'),
-            'role' => 'wali',
-        ]);
-        $wali = WaliMurid::create([
-            'user_id' => $waliUser->id,
-            'alamat' => 'Jl. Mawar No. 10',
-            'lokasi_lat' => -8.1723,
-            'lokasi_lng' => 113.6995,
-        ]);
+        // Wali
+        $waliUser = User::updateOrCreate(
+            ['email' => 'wali@paud.com'],
+            [
+                'name' => 'Pak Budi',
+                'password' => Hash::make('123456'),
+                'role' => 'wali',
+            ]
+        );
+        $wali = WaliMurid::updateOrCreate(
+            ['user_id' => $waliUser->id],
+            [
+                'alamat' => 'Jl. Mawar No. 10',
+                'lokasi_lat' => -8.1723,
+                'lokasi_lng' => 113.6995,
+            ]
+        );
 
         // Kelas
-        $kelas = Kelas::create([
-            'nama_kelas' => 'Kelompok A',
-            'umur_group' => '4-5 tahun',
-        ]);
+        $kelas = Kelas::updateOrCreate(
+            ['nama_kelas' => 'Kelompok A'],
+            ['umur_group' => '4-5 tahun']
+        );
 
         // Siswa
-        Siswa::create([
-            'nama' => 'Ani',
-            'nis' => 'S001',
-            'tanggal_lahir' => '2020-01-01',
-            'kelas_id' => $kelas->id,
-            'wali_id' => $wali->id,
-            'foto' => null,
-        ]);
+        Siswa::updateOrCreate(
+            ['nis' => 'S001'],
+            [
+                'nama' => 'Ani',
+                'tanggal_lahir' => '2020-01-01',
+                'kelas_id' => $kelas->id,
+                'wali_id' => $wali->id,
+                'foto' => null,
+            ]
+        );
     }
 }

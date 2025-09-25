@@ -36,6 +36,10 @@
                         class="w-full mt-2 px-4 py-2 rounded-lg border focus:ring-2 focus:ring-green-400 outline-none">
                 </div>
 
+                        @if (session('error'))
+                        <div style="color:red;">{{ session('error') }}</div>
+                        @endif
+
                 <button type="submit"
                     class="w-full py-3 rounded-lg bg-gradient-to-r from-green-400 to-green-600 text-white font-bold shadow-lg hover:opacity-90 transition">
                     Login
@@ -44,6 +48,7 @@
 
             <p class="text-sm text-gray-500 mt-6 text-center md:text-left">© 2025 Simpaud Kartoharjo</p>
         </div>
+
     </div>
 
 </body>

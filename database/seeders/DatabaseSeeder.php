@@ -3,21 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        $this->call(MasterSeeder::class);
-    ([
-    'name' => 'Super Admin',
-    'email' => 'admin@paud.com',
-    'role' => 'admin',
-    ]);
+        $this->call([
+            MasterSeeder::class,
+        ]);
     }
 }
