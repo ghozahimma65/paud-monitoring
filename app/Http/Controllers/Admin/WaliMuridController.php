@@ -3,44 +3,64 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\WaliMurid;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class WaliMuridController extends Controller
 {
     public function index()
     {
-        return response()->json(WaliMurid::with('user')->get());
+        // ambil semua wali murid + user terkait
+        $wali = WaliMurid::with('user')->get();
+        return view('admin.wali.index', compact('wali'));
+    }
+
+    public function create()
+    {
+        // ambil data user untuk dropdown (jika sudah punya akun)
+        $users = User::where('role', 'wali')->get();
+        return view('admin.wali.create', compact('users'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'user_id'   => 'required|exists:users,id',
-            'alamat'    => 'nullable|string',
-            'pekerjaan' => 'nullable|string',
+            'nama'       => 'required|string|max:255',
+            'alamat'     => 'nullable|string',
+            'lokasi_lat' => 'nullable|numeric',
+            'lokasi_lng' => 'nullable|numeric',
         ]);
 
-        $wali = WaliMurid::create($request->all());
-        return response()->json($wali, 201);
+        WaliMurid::create($request->all());
+
+        return redirect()->route('wali.index')->with('success', 'Wali Murid berhasil ditambahkan');
     }
 
-    public function show($id)
+    public function edit(WaliMurid $wali)
     {
-        $wali = WaliMurid::with('user')->findOrFail($id);
-        return response()->json($wali);
+        $users = User::where('role', 'wali')->get();
+        return view('admin.wali.edit', compact('wali', 'users'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, WaliMurid $wali)
     {
-        $wali = WaliMurid::findOrFail($id);
+        $request->validate([
+            'nama'       => 'required|string|max:255',
+            'alamat'     => 'nullable|string',
+            'lokasi_lat' => 'nullable|numeric',
+            'lokasi_lng' => 'nullable|numeric',
+        ]);
+
         $wali->update($request->all());
-        return response()->json($wali);
+
+        return redirect()->route('wali.index')->with('success', 'Wali Murid berhasil diperbarui');
     }
 
-    public function destroy($id)
+    public function destroy(WaliMurid $wali)
     {
-        WaliMurid::destroy($id);
-        return response()->json(['message' => 'Wali Murid deleted']);
+        $wali->delete();
+
+        return redirect()->route('wali.index')->with('success', 'Wali Murid berhasil dihapus');
     }
 }

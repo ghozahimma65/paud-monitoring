@@ -20,9 +20,9 @@
             <div>
                 <p class="font-semibold uppercase text-xs mb-2">Data Master</p>
                 <ul class="ml-4 space-y-1">
-                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">👨‍🏫 Guru</a></li>
-                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">👪 Wali Murid</a></li>
-                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">🧒 Peserta Didik</a></li>
+                    <li><a href="{{ route('guru.index') }}" class="block p-2 hover:bg-green-700 rounded">👨‍🏫 Guru</a></li>
+                    <li><a href="{{ route('wali.index') }}" class="block p-2 hover:bg-green-700 rounded">👪 Wali Murid</a></li>
+                    <li><a href="{{ route('siswa.index') }}" class="block p-2 hover:bg-green-700 rounded">🧒 Peserta Didik</a></li>
                 </ul>
             </div>
 
