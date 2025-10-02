@@ -7,19 +7,18 @@ use App\Models\Guru;
 use App\Models\Siswa;
 use App\Models\WaliMurid;
 use App\Models\Kelas;
+use App\Models\Pengumuman; 
 
 class DashboardController extends Controller
 {
     public function index()
-{
-    $pengumuman = "Besok ada kegiatan belajar di kantor polisi";
-    $jadwal = "Pembelajaran di kantor polisi - 8 a.m.";
-    $aktivitas = [
-        ['nama' => 'Winda Kurnia', 'waktu' => '01 Aug, 09:20AM'],
-        ['nama' => 'Siti Nurhaliza', 'waktu' => '01 Aug, 04:20PM'],
-        ['nama' => 'Daffa Lintang', 'waktu' => '01 Aug, 08:20AM'],
+    {
+        $pengumuman = Pengumuman::orderBy('created_at', 'desc')->first();
+        $aktivitas = [
+        (object)['deskripsi' => 'Admin menambahkan data guru', 'created_at' => now()],
+        (object)['deskripsi' => 'Admin membuat pengumuman baru', 'created_at' => now()->subHour()],
     ];
 
-    return view('dashboard', compact('pengumuman', 'jadwal', 'aktivitas'));
+    return view('dashboard', compact('pengumuman','aktivitas'));
 }
 }

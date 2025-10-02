@@ -1,40 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="p-6">
+    <h1 class="text-2xl font-semibold mb-6">Hai, Admin 👋</h1>
 
-    <!-- Pengumuman -->
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h2 class="font-bold text-gray-800 mb-3">📢 Pengumuman</h2>
-        <p>{{ $pengumuman ?? 'Belum ada pengumuman.' }}</p>
-    </div>
-
-    <!-- Jadwal -->
-    <div class="bg-white p-6 rounded-xl shadow">
-        <div class="flex justify-between items-center mb-3">
-            <h2 class="font-bold text-gray-800">📅 Jadwal</h2>
-            <a href="#" class="text-sm text-red-500 hover:underline">See all</a>
+    <!-- Baris 1: Pengumuman (full width) -->
+    <div class="mb-6">
+        <div class="bg-white shadow rounded-lg p-4">
+            <h2 class="text-lg font-semibold flex items-center mb-2">📢 Pengumuman Terbaru</h2>
+            @if($pengumuman)
+    <h4>{{ $pengumuman->judul }}</h4>
+    <p>{{ $pengumuman->isi }}</p>
+    <small>
+        Periode: {{ $pengumuman->tanggal_mulai }} - {{ $pengumuman->tanggal_selesai }}
+        @if(now()->between($pengumuman->tanggal_mulai, $pengumuman->tanggal_selesai))
+            <span class="badge bg-success">Aktif</span>
+        @else
+            <span class="badge bg-secondary">Belum aktif</span>
+        @endif
+    </small>
+@else
+    <p>Belum ada pengumuman.</p>
+@endif
         </div>
-        <p>🔔 {{ $jadwal ?? 'Belum ada jadwal.' }}</p>
     </div>
 
-    <!-- Aktivitas Peserta Didik -->
-    <div class="bg-white p-6 rounded-xl shadow">
-        <div class="flex justify-between items-center mb-3">
-            <h2 class="font-bold text-gray-800">🧒 Aktivitas Peserta Didik</h2>
-            <a href="#" class="text-sm text-red-500 hover:underline">See all</a>
+    <!-- Baris 2: Jadwal & Aktivitas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Jadwal -->
+        <div class="bg-white shadow rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-lg font-semibold flex items-center">📅 Jadwal</h2>
+                <a href="#" class="text-red-500 text-sm">See all</a>
+            </div>
+            <p class="text-gray-400">Belum ada jadwal.</p>
         </div>
-        <ul class="space-y-3">
-            @forelse ($aktivitas as $a)
-                <li class="flex items-center justify-between border-b pb-2">
-                    <span>{{ $a['nama'] }}</span>
-                    <span class="text-sm text-gray-500">{{ $a['waktu'] }}</span>
-                </li>
-            @empty
-                <li>Belum ada aktivitas.</li>
-            @endforelse
-        </ul>
-    </div>
 
+        <!-- Aktivitas -->
+        <div class="bg-white shadow rounded-lg p-4">
+            <h2 class="text-lg font-semibold flex items-center mb-2">📌 Aktivitas Terbaru</h2>
+            <ul class="space-y-1 text-gray-600 text-sm">
+                @forelse($aktivitas as $item)
+                    <li>• {{ $item->deskripsi }} 
+                        <span class="text-gray-400"> - {{ $item->created_at->diffForHumans() }}</span>
+                    </li>
+                @empty
+                    <li class="text-gray-400">Tidak ada aktivitas terbaru.</li>
+                @endforelse
+            </ul>
+        </div>
+
+    </div>
 </div>
 @endsection

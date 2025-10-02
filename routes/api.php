@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\KelasController;
 use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\WaliMuridController;
 use App\Http\Controllers\Admin\SiswaController;
+use App\Http\Controllers\Api\PerkembanganController as ApiPerkembangan;
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -41,5 +42,5 @@ Route::middleware('auth:sanctum')->group(function () {
         'update' => 'api.siswa.update',
         'destroy' => 'api.siswa.destroy',
     ]);
-
+    Route::middleware('auth:sanctum')->get('/wali/perkembangan', [ApiPerkembangan::class,'index']);
 });
