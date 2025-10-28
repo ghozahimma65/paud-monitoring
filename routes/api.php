@@ -42,5 +42,4 @@ Route::middleware('auth:sanctum')->group(function () {
         'update' => 'api.siswa.update',
         'destroy' => 'api.siswa.destroy',
     ]);
-    Route::middleware('auth:sanctum')->get('/wali/perkembangan', [ApiPerkembangan::class,'index']);
 });

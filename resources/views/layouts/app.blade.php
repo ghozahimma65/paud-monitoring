@@ -26,9 +26,9 @@
                 </ul>
             </div>
 
-            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
-                <i class="fas fa-chart-line mr-3"></i> Laporan Perkembangan
-            </a>
+<a href="{{ route('admin.perkembangan.index') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
+    <i class="fas fa-chart-line mr-3"></i> Laporan Perkembangan
+</a>
 
             <a href="{{ route('pengumuman.index') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
                 <i class="fas fa-bullhorn mr-3"></i> Menu Pengumuman

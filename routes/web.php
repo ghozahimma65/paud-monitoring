@@ -7,8 +7,7 @@ use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\WaliMuridController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\PengumumanController;
-use App\Http\Controllers\Guru\PerkembanganController as GuruPerkembangan;
-use App\Http\Controllers\Admin\PerkembanganController as AdminPerkembangan;
+use App\Http\Controllers\Admin\PerkembanganController;
 
 // Login routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -30,13 +29,12 @@ Route::prefix('admin')->group(function () {
         Route::resource('wali', WaliMuridController::class);
         Route::resource('siswa', SiswaController::class);
 
-Route::middleware(['auth','role:guru'])->prefix('guru')->name('guru.')->group(function(){
-    Route::resource('perkembangan', GuruPerkembangan::class);
-});
-
-Route::middleware(['auth','role:admin'])->prefix('admin')->name('admin.')->group(function(){
-    Route::get('perkembangan', [AdminPerkembangan::class, 'index'])->name('perkembangan.index');
-    Route::get('perkembangan/{id}', [AdminPerkembangan::class, 'show'])->name('perkembangan.show');
-});
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::get('/perkembangan', [PerkembanganController::class, 'index'])->name('admin.perkembangan.index');
+        Route::get('/perkembangan/{id}', [PerkembanganController::class, 'show'])->name('admin.perkembangan.show');
+        Route::get('/perkembangan/{id}/print', [PerkembanganController::class, 'print'])->name('admin.perkembangan.print');
     });
+});
+}); 
 });

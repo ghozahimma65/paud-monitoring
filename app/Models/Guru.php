@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Guru extends Model
 {
+    use HasFactory;
     protected $table = 'guru';
-    protected $fillable = ['user_id','bidang'];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    
+    protected $fillable = [
+        'nama_guru',
+        'email',
+        'no_hp',
+        'bidang',
+    ];
 }

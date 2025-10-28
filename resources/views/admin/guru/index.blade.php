@@ -1,55 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-white shadow-md rounded-lg p-6">
-    <div class="flex justify-between items-center mb-4">
-        <h1 class="text-xl font-semibold text-gray-700">👨‍🏫 Data Guru</h1>
-        <a href="{{ route('guru.create') }}" 
-           class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
-           + Tambah Guru
-        </a>
-    </div>
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">Laporan Perkembangan Anak</h1>
 
-    <table class="w-full table-auto border-collapse">
-        <thead>
-            <tr class="bg-green-600 text-white text-left">
-                <th class="p-2">#</th>
-                <th class="p-2">Nama</th>
-                <th class="p-2">Bidang</th>
-                <th class="p-2">Telepon</th>
-                <th class="p-2">Alamat</th>
-                <th class="p-2">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($guru as $i => $item)
-            <tr class="border-b hover:bg-gray-50">
-                <td class="p-2">{{ $i+1 }}</td>
-                <td class="p-2">{{ $item->nama ?? '-' }}</td>
-                <td class="p-2">{{ $item->bidang ?? '-' }}</td>
-                <td class="p-2">{{ $item->telepon ?? '-' }}</td>
-                <td class="p-2">{{ $item->alamat ?? '-' }}</td>
-                <td class="p-2 flex gap-2">
-                    <a href="{{ route('guru.edit', $item->id) }}"
-                       class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
-                       Edit
-                    </a>
-                    <form action="{{ route('guru.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                            Hapus
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="6" class="text-center text-gray-500 p-4">Belum ada data guru</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    @if($perkembangans->isEmpty())
+        <p>Tidak ada data perkembangan yang tersedia.</p>
+    @else
+        <table class="table-auto w-full border-collapse border border-gray-300">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="border p-2">Nama Siswa</th>
+                    <th class="border p-2">Tanggal</th>
+                    <th class="border p-2">Aspek</th>
+                    <th class="border p-2">Deskripsi</th>
+                    <th class="border p-2">Guru</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($perkembangans as $p)
+                    <tr>
+                        <td class="border p-2">{{ $p->siswa->nama ?? '-' }}</td>
+                        <td class="border p-2">{{ $p->tanggal }}</td>
+                        <td class="border p-2">{{ $p->aspek }}</td>
+                        <td class="border p-2">{{ $p->deskripsi }}</td>
+                        <td class="border p-2">{{ $p->guru->nama_guru ?? '-' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 </div>
 @endsection

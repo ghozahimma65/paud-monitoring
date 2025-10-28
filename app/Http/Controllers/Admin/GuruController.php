@@ -1,68 +1,59 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Guru;
-use App\Models\User;
+use Illuminate\Http\Request;
 
 class GuruController extends Controller
 {
     public function index()
     {
-        $guru = Guru::with('user')->get();
+        $guru = Guru::latest()->get();
         return view('admin.guru.index', compact('guru'));
     }
 
     public function create()
     {
-        $users = User::all(); // misalnya guru punya relasi ke user
-        return view('admin.guru.create', compact('users'));
+        return view('admin.guru.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-        'nama'   => 'required|string|max:255',
-        'bidang' => 'required|string|max:255',
-        'alamat' => 'nullable|string',
-        'no_hp'  => 'nullable|string',
-]);
-
-
-        Guru::create($request->all());
-        return redirect()->route('guru.index')->with('success', 'Guru berhasil ditambahkan');
-    }
-
-    public function show($id)
-    {
-        $guru = Guru::with('user')->findOrFail($id);
-        return view('admin.guru.show', compact('guru'));
-    }
-
-    public function edit($id)
-    {
-        $guru = Guru::findOrFail($id);
-        $users = User::all();
-        return view('admin.guru.edit', compact('guru', 'users'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'bidang'  => 'required|string|max:255',
+            'nama_guru' => 'required|string|max:100',
+            'email' => 'nullable|email|max:100',
+            'no_hp' => 'nullable|string|max:20',
+            'bidang' => 'nullable|string|max:100',
         ]);
 
-        $guru = Guru::findOrFail($id);
-        $guru->update($request->all());
+        Guru::create($request->all());
 
-        return redirect()->route('guru.index')->with('success', 'Data guru berhasil diperbarui');
+        return redirect()->route('guru.index')->with('success', 'Data guru berhasil ditambahkan.');
     }
 
-    public function destroy($id)
+    public function edit(Guru $guru)
     {
-        Guru::destroy($id);
-        return redirect()->route('guru.index')->with('success', 'Guru berhasil dihapus');
+        return view('admin.guru.edit', compact('guru'));
+    }
+
+    public function update(Request $request, Guru $guru)
+    {
+        $request->validate([
+            'nama_guru' => 'required|string|max:100',
+            'email' => 'nullable|email|max:100',
+            'no_hp' => 'nullable|string|max:20',
+            'bidang' => 'nullable|string|max:100',
+        ]);
+
+        $guru->update($request->all());
+        return redirect()->route('guru.index')->with('success', 'Data guru berhasil diperbarui.');
+    }
+
+    public function destroy(Guru $guru)
+    {
+        $guru->delete();
+        return redirect()->route('guru.index')->with('success', 'Data guru berhasil dihapus.');
     }
 }
