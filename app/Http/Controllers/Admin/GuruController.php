@@ -10,8 +10,8 @@ class GuruController extends Controller
 {
     public function index()
     {
-        $guru = Guru::latest()->get();
-        return view('admin.guru.index', compact('guru'));
+    $gurus = Guru::orderBy('created_at', 'desc')->get();
+    return view('admin.guru.index', compact('gurus'));
     }
 
     public function create()

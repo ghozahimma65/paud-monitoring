@@ -1,34 +1,45 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Laporan Perkembangan Anak</h1>
+<div class="container">
+    <h4 class="mb-3">📚 Data Guru</h4>
 
-    @if($perkembangans->isEmpty())
-        <p>Tidak ada data perkembangan yang tersedia.</p>
-    @else
-        <table class="table-auto w-full border-collapse border border-gray-300">
-            <thead class="bg-gray-100">
+    <a href="{{ route('guru.create') }}" class="btn btn-success mb-3">+ Tambah Guru</a>
+
+    <table class="table table-bordered">
+        <thead class="table-success">
+            <tr><q></q>
+                <th>No</th>
+                <th>Nama Guru</th>
+                <th>Email</th>
+                <th>No HP</th>
+                <th>Bidang</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($gurus as $guru)
                 <tr>
-                    <th class="border p-2">Nama Siswa</th>
-                    <th class="border p-2">Tanggal</th>
-                    <th class="border p-2">Aspek</th>
-                    <th class="border p-2">Deskripsi</th>
-                    <th class="border p-2">Guru</th>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $guru->nama_guru }}</td>
+                    <td>{{ $guru->email }}</td>
+                    <td>{{ $guru->no_hp }}</td>
+                    <td>{{ $guru->bidang }}</td>
+                    <td>
+                        <a href="{{ route('guru.edit', $guru->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin?')">Hapus</button>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($perkembangans as $p)
-                    <tr>
-                        <td class="border p-2">{{ $p->siswa->nama ?? '-' }}</td>
-                        <td class="border p-2">{{ $p->tanggal }}</td>
-                        <td class="border p-2">{{ $p->aspek }}</td>
-                        <td class="border p-2">{{ $p->deskripsi }}</td>
-                        <td class="border p-2">{{ $p->guru->nama_guru ?? '-' }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+            @empty
+                <tr>
+                    <td colspan="6" class="text-center">Belum ada data guru</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
 @endsection
