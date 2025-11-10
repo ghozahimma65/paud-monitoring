@@ -6,40 +6,28 @@
 
     <form action="{{ route('guru.store') }}" method="POST">
         @csrf
+
         <div class="mb-4">
-            <label class="block text-gray-700 mb-1">Nama</label>
-            <input type="text" name="nama" 
-                   class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300" required>
+            <label class="block text-gray-700">Nama</label>
+            <input type="text" name="nama_guru" class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300" required>
         </div>
 
         <div class="mb-4">
-            <label class="block text-gray-700 mb-1">Bidang</label>
-            <input type="text" name="bidang" 
-                   class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300">
+            <label class="block text-gray-700">Bidang</label>
+            <input type="text" name="bidang" class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300">
         </div>
 
         <div class="mb-4">
-            <label class="block text-gray-700 mb-1">Telepon</label>
-            <input type="text" name="telepon" 
-                   class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300">
+            <label class="block text-gray-700">No HP</label>
+            <input type="text" name="no_hp" class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300">
         </div>
 
         <div class="mb-4">
-            <label class="block text-gray-700 mb-1">Alamat</label>
-            <input type="text" name="alamat" 
-                   class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300">
+            <label class="block text-gray-700">Email</label>
+            <input type="email" name="email" class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300">
         </div>
 
-        <div class="mt-6 flex gap-3">
-            <button type="submit" 
-                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
-                Simpan
-            </button>
-            <a href="{{ route('guru.index') }}" 
-               class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition">
-                Batal
-            </a>
-        </div>
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Simpan</button>
     </form>
 </div>
 @endsection

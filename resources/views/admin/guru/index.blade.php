@@ -1,43 +1,44 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h4 class="mb-3">📚 Data Guru</h4>
+<div class="bg-white shadow-md rounded-lg p-6">
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-xl font-semibold text-gray-700">👨‍🏫 Data Guru</h1>
+        <a href="{{ route('guru.create') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+ Tambah Guru</a>
+    </div>
 
-    <a href="{{ route('guru.create') }}" class="btn btn-success mb-3">+ Tambah Guru</a>
-
-    <table class="table table-bordered">
-        <thead class="table-success">
-            <tr><q></q>
-                <th>No</th>
-                <th>Nama Guru</th>
-                <th>Email</th>
-                <th>No HP</th>
-                <th>Bidang</th>
-                <th>Aksi</th>
+    <table class="w-full border-collapse">
+        <thead>
+            <tr class="bg-green-600 text-white text-left">
+                <th class="p-2">#</th>
+                <th class="p-2">Nama Guru</th>
+                <th class="p-2">Email</th>
+                <th class="p-2">No HP</th>
+                <th class="p-2">Bidang</th>
+                <th class="p-2">Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($gurus as $guru)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $guru->nama_guru }}</td>
-                    <td>{{ $guru->email }}</td>
-                    <td>{{ $guru->no_hp }}</td>
-                    <td>{{ $guru->bidang }}</td>
-                    <td>
-                        <a href="{{ route('guru.edit', $guru->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin?')">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
+            @forelse ($gurus as $i => $guru)
+            <tr class="border-b hover:bg-gray-50">
+                <td class="p-2">{{ $i + 1 }}</td>
+                <td class="p-2">{{ $guru->nama_guru ?? '-' }}</td>
+                <td class="p-2">{{ $guru->email ?? '-' }}</td>
+                <td class="p-2">{{ $guru->no_hp ?? '-' }}</td>
+                <td class="p-2">{{ $guru->bidang ?? '-' }}</td>
+                <td class="p-2 space-x-2">
+                    <a href="{{ route('guru.edit', $guru->id) }}" class="text-blue-500 hover:underline">Edit</a>
+                    <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus data ini?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-500 hover:underline">Hapus</button>
+                    </form>
+                </td>
+            </tr>
             @empty
-                <tr>
-                    <td colspan="6" class="text-center">Belum ada data guru</td>
-                </tr>
+            <tr>
+                <td colspan="6" class="text-center text-gray-500 py-4">Belum ada data guru</td>
+            </tr>
             @endforelse
         </tbody>
     </table>

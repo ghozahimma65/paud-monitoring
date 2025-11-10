@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
         'destroy' => 'api.guru.destroy',
     ]);
     Route::apiResource('wali', WaliMuridController::class)->names([
-        'index' => 'api.wali.index',
+        'index' => 'api.wali-murid.index',
         'show' => 'api.wali.show',
         'store' => 'api.wali.store',
         'update' => 'api.wali.update',

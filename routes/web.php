@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->group(function () {
         Route::resource('guru', GuruController::class);
-        Route::resource('wali', WaliMuridController::class);
+        Route::resource('wali-murid', WaliMuridController::class);
         Route::resource('siswa', SiswaController::class);
 
 Route::middleware(['auth'])->group(function () {

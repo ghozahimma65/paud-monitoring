@@ -21,7 +21,7 @@
                 <p class="font-semibold uppercase text-xs mb-2">Data Master</p>
                 <ul class="ml-4 space-y-1">
                     <li><a href="{{ route('guru.index') }}" class="block p-2 hover:bg-green-700 rounded">👨‍🏫 Guru</a></li>
-                    <li><a href="{{ route('wali.index') }}" class="block p-2 hover:bg-green-700 rounded">👪 Wali Murid</a></li>
+                    <li><a href="{{ route('wali-murid.index') }}"class="block p-2 hover:bg-green-700 rounded">👪 Wali Murid</a></li>
                     <li><a href="{{ route('siswa.index') }}" class="block p-2 hover:bg-green-700 rounded">🧒 Peserta Didik</a></li>
                 </ul>
             </div>
@@ -70,6 +70,11 @@
         <!-- Content -->
         <main class="p-6">
             @yield('content')
+            @if (session('success'))
+            <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
+                {{ session('success') }}
+            </div>
+            @endif
         </main>
     </div>
 

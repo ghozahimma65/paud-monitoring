@@ -4,63 +4,57 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\WaliMurid;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class WaliMuridController extends Controller
 {
     public function index()
     {
-        // ambil semua wali murid + user terkait
-        $wali = WaliMurid::with('user')->get();
-        return view('admin.wali.index', compact('wali'));
+        $wali_murids = WaliMurid::orderBy('created_at', 'desc')->get();
+        return view('admin.wali_murid.index', compact('wali_murids'));
     }
 
     public function create()
     {
-        // ambil data user untuk dropdown (jika sudah punya akun)
-        $users = User::where('role', 'wali')->get();
-        return view('admin.wali.create', compact('users'));
+        return view('admin.wali_murid.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama'       => 'required|string|max:255',
-            'alamat'     => 'nullable|string',
-            'lokasi_lat' => 'nullable|numeric',
-            'lokasi_lng' => 'nullable|numeric',
+            'nama_wali' => 'required|string|max:100',
+            'email' => 'nullable|email|max:100',
+            'no_hp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string|max:255',
         ]);
-
-        WaliMurid::create($request->all());
-
-        return redirect()->route('wali.index')->with('success', 'Wali Murid berhasil ditambahkan');
+    
+        WaliMurid::create($request->only(['nama_wali', 'email', 'no_hp', 'alamat']));
+    
+        return redirect()->route('wali-murid.index')->with('success', 'Data wali murid berhasil ditambahkan.');
     }
-
-    public function edit(WaliMurid $wali)
+    public function edit(WaliMurid $wali_murid)
     {
-        $users = User::where('role', 'wali')->get();
-        return view('admin.wali.edit', compact('wali', 'users'));
+        return view('admin.wali_murid.edit', compact('wali_murid'));
     }
 
-    public function update(Request $request, WaliMurid $wali)
+    public function update(Request $request, WaliMurid $wali_murid)
     {
         $request->validate([
-            'nama'       => 'required|string|max:255',
-            'alamat'     => 'nullable|string',
-            'lokasi_lat' => 'nullable|numeric',
-            'lokasi_lng' => 'nullable|numeric',
+            'nama_wali' => 'required|string|max:100',
+            'email' => 'nullable|email|max:100',
+            'no_hp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string|max:255',
         ]);
 
-        $wali->update($request->all());
+        $wali_murid->update($request->all());
 
-        return redirect()->route('wali.index')->with('success', 'Wali Murid berhasil diperbarui');
+        return redirect()->route('wali-murid.index')->with('success', 'Data wali murid berhasil diperbarui.');
     }
 
-    public function destroy(WaliMurid $wali)
+    public function destroy(WaliMurid $wali_murid)
     {
-        $wali->delete();
+        $wali_murid->delete();
 
-        return redirect()->route('wali.index')->with('success', 'Wali Murid berhasil dihapus');
+        return redirect()->route('wali-murid.index')->with('success', 'Data wali murid berhasil dihapus.');
     }
 }
