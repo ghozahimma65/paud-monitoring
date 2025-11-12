@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Siswa extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'nama',
-        'nis',
+        'tempat_lahir',
         'tanggal_lahir',
+        'alamat',
+        'keterangan',
         'kelas_id',
         'wali_id',
         'foto',
@@ -22,7 +22,7 @@ class Siswa extends Model
         return $this->belongsTo(Kelas::class);
     }
 
-    public function wali()
+    public function waliMurid()
     {
         return $this->belongsTo(WaliMurid::class, 'wali_id');
     }

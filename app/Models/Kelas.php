@@ -9,8 +9,9 @@ class Kelas extends Model
     protected $table = 'kelas';
     protected $fillable = ['nama_kelas','umur_group'];
 
-    public function siswa()
+    public function siswas()
     {
-        return $this->hasMany(Siswa::class);
+        return $this->hasMany(Siswa::class, 'kelas_id');
     }
+
 }

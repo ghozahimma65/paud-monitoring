@@ -17,4 +17,10 @@ class WaliMurid extends Model
         'no_hp',
         'alamat',
     ];
+
+    // Tambahin relasi ke siswa
+    public function siswas()
+    {
+        return $this->hasMany(Siswa::class, 'wali_id');
+    }
 }

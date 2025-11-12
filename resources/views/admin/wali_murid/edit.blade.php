@@ -1,36 +1,54 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-white shadow-md rounded-lg p-6">
-    <h2 class="text-xl font-semibold mb-4">Edit Data Wali Murid</h2>
+<div class="bg-white shadow-md rounded-lg p-6 max-w-xl mx-auto">
+    <h1 class="text-xl font-semibold text-gray-700 mb-4">✏️ Edit Data Wali Murid</h1>
 
-    <form action="{{ route('wali-murid.update', $wali_murid->id) }}" method="POST" class="space-y-4">
+    <form action="{{ route('wali-murid.update', $wali_murid->id) }}" method="POST">
         @csrf
         @method('PUT')
 
-        <div>
+        <!-- Nama Wali -->
+        <div class="mb-4">
             <label class="block text-gray-700 font-medium">Nama Wali</label>
-            <input type="text" name="nama_wali" class="w-full border rounded p-2" value="{{ $wali_murid->nama_wali }}" required>
+            <input type="text" name="nama_wali" 
+                   value="{{ old('nama_wali', $wali_murid->nama_wali) }}"
+                   class="w-full border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500">
         </div>
 
-        <div>
+        <!-- Email -->
+        <div class="mb-4">
             <label class="block text-gray-700 font-medium">Email</label>
-            <input type="email" name="email" class="w-full border rounded p-2" value="{{ $wali_murid->email }}">
+            <input type="email" name="email" 
+                   value="{{ old('email', $wali_murid->email) }}"
+                   class="w-full border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500">
         </div>
 
-        <div>
+        <!-- No HP -->
+        <div class="mb-4">
             <label class="block text-gray-700 font-medium">No HP</label>
-            <input type="text" name="no_hp" class="w-full border rounded p-2" value="{{ $wali_murid->no_hp }}">
+            <input type="text" name="no_hp" 
+                   value="{{ old('no_hp', $wali_murid->no_hp) }}"
+                   class="w-full border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500">
         </div>
 
-        <div>
+        <!-- Alamat -->
+        <div class="mb-4">
             <label class="block text-gray-700 font-medium">Alamat</label>
-            <textarea name="alamat" rows="3" class="w-full border rounded p-2">{{ $wali_murid->alamat }}</textarea>
+            <textarea name="alamat" rows="3"
+                      class="w-full border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500">{{ old('alamat', $wali_murid->alamat) }}</textarea>
         </div>
 
-        <div class="flex justify-end gap-2">
-            <a href="{{ route('wali-murid.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Batal</a>
-            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Update</button>
+        <!-- Tombol -->
+        <div class="flex justify-end mt-6 gap-3">
+            <a href="{{ route('wali-murid.index') }}" 
+               class="bg-gray-500 text-white px-5 py-2 rounded hover:bg-gray-600 transition">
+                Batal
+            </a>
+            <button type="submit"
+                    class="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition">
+                Perbarui
+            </button>
         </div>
     </form>
 </div>
