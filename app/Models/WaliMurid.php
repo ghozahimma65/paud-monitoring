@@ -13,14 +13,14 @@ class WaliMurid extends Model
 
     protected $fillable = [
         'nama_wali',
-        'email',
         'no_hp',
+        'email',
         'alamat',
+        'user_id',
     ];
 
-    // Tambahin relasi ke siswa
-    public function siswas()
+    public function user()
     {
-        return $this->hasMany(Siswa::class, 'wali_id');
+        return $this->belongsTo(User::class);
     }
 }

@@ -37,9 +37,12 @@
             <div>
                 <p class="font-semibold uppercase text-xs mb-2">Menu Akun</p>
                 <ul class="ml-4 space-y-1">
-                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">👨‍🏫 Guru</a></li>
-                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">👪 Wali Murid</a></li>
-                    <li><a href="#" class="block p-2 hover:bg-green-700 rounded">🧒 Peserta Didik</a></li>
+                    <li>
+                        <a href="{{ route('akun.index') }}" 
+                           class="block p-2 hover:bg-green-700 rounded">
+                           👥 Manajemen Akun
+                        </a>
+                    </li>
                 </ul>
             </div>
 

@@ -8,12 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Guru extends Model
 {
     use HasFactory;
+
+    // kasih tahu Laravel kalau nama tabelnya "guru", bukan "gurus"
     protected $table = 'guru';
-    
+
     protected $fillable = [
-        'nama_guru',
-        'email',
+        'nama',
+        'jenis_guru',
         'no_hp',
-        'bidang',
+        'email',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
