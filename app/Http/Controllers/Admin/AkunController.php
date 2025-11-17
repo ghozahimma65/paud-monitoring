@@ -27,19 +27,23 @@ class AkunController extends Controller
 
     public function store(Request $request)
     {
+
+     
         $request->validate([
             'role' => 'required|in:guru,wali_murid',
-            'user_id' => 'required',
+            'user_guru_id' => 'required',
+            'user_wali_id' => 'required',
         ]);
-    
+
         if ($request->role == 'guru') {
-            $data = Guru::findOrFail($request->user_id);
+            $data = Guru::findOrFail($request->user_guru_id);
             $name = $data->nama_guru;
             $email = $data->email ?? strtolower(str_replace(' ', '', $data->nama_guru)) . '@paud.local';
-            $data = WaliMurid::findOrFail($request->user_id);
+            $data = WaliMurid::findOrFail($request->user_wali_id);
             $name = $data->nama_wali;
             $email = $data->email ?? strtolower(str_replace(' ', '', $data->nama_wali)) . '@paud.local';
         }
+        
     
         if (User::where('email', $email)->exists()) {
             return back()->with('error', 'Email sudah digunakan untuk akun lain.');
@@ -53,6 +57,7 @@ class AkunController extends Controller
         ]);
     
         $data->update(['user_id' => $user->id]);
+
     
         return redirect()->route('akun.index')->with('success', 'Akun berhasil dibuat!');
     }
