@@ -5,6 +5,7 @@
     <h1 class="text-xl font-semibold text-gray-700 mb-4">➕ Tambah Akun</h1>
 
     <form action="{{ route('akun.store') }}" method="POST">
+        
         @csrf
 
         <div class="mb-4">
@@ -17,7 +18,7 @@
 
         <div id="guruSelect" class="mb-4">
             <label class="block text-gray-700 font-medium mb-1">Pilih Guru</label>
-            <select name="user_id" class="w-full border-gray-300 rounded-lg p-2">
+            <select name="user_guru_id" class="w-full border-gray-300 rounded-lg p-2">
                 @foreach ($gurus as $guru)
                     <option value="{{ $guru->id }}">{{ $guru->nama_guru }}</option>
                 @endforeach
@@ -26,13 +27,16 @@
 
         <div id="waliSelect" class="mb-4 hidden">
             <label class="block text-gray-700 font-medium mb-1">Pilih Wali Murid</label>
-            <select name="user_id" class="w-full border-gray-300 rounded-lg p-2">
+            <select name="user_wali_id" class="w-full border-gray-300 rounded-lg p-2">
                 @foreach ($waliMurids as $wali)
                     <option value="{{ $wali->id }}">{{ $wali->nama_wali }}</option>
                 @endforeach
             </select>
         </div>
-
+        <!-- with error -->
+          <div class="text-red-600">
+             {{ session('error') }}
+          </div>
         <div class="flex justify-end gap-3">
             <a href="{{ route('akun.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Batal</a>
             <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Simpan</button>
