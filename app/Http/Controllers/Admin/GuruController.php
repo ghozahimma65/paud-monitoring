@@ -10,8 +10,8 @@ class GuruController extends Controller
 {
     public function index()
     {
-    $gurus = Guru::orderBy('created_at', 'desc')->get();
-    return view('admin.guru.index', compact('gurus'));
+        $gurus = Guru::orderBy('created_at', 'desc')->get();
+        return view('admin.guru.index', compact('gurus'));
     }
 
     public function create()
@@ -21,11 +21,12 @@ class GuruController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi disesuaikan dengan kolom database
         $request->validate([
-            'nama_guru' => 'required|string|max:100',
-            'email' => 'nullable|email|max:100',
-            'no_hp' => 'nullable|string|max:20',
-            'bidang' => 'nullable|string|max:100',
+            'nama_guru'  => 'required|string|max:100',
+            'email'      => 'nullable|email|max:100',
+            'no_hp'      => 'nullable|string|max:20',
+            'jenis_guru' => 'required|in:guru_kelas,shadow_abk', // UBAH 'bidang' JADI 'jenis_guru'
         ]);
 
         Guru::create($request->all());
@@ -41,10 +42,10 @@ class GuruController extends Controller
     public function update(Request $request, Guru $guru)
     {
         $request->validate([
-            'nama_guru' => 'required|string|max:100',
-            'email' => 'nullable|email|max:100',
-            'no_hp' => 'nullable|string|max:20',
-            'bidang' => 'nullable|string|max:100',
+            'nama_guru'  => 'required|string|max:100',
+            'email'      => 'nullable|email|max:100',
+            'no_hp'      => 'nullable|string|max:20',
+            'jenis_guru' => 'required|in:guru_kelas,shadow_abk',
         ]);
 
         $guru->update($request->all());

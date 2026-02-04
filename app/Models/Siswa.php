@@ -1,28 +1,29 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Siswa extends Model
 {
+    use HasFactory;
+
+    protected $table = 'siswas'; // Nama tabel di database
+
     protected $fillable = [
-        'nama',
+        'wali_id',        // Kunci Relasi ke Wali Murid
+        'nama_siswa',
         'tempat_lahir',
         'tanggal_lahir',
-        'alamat',
-        'keterangan',
-        'kelas_id',
-        'wali_id',
-        'foto',
+        'jenis_kelamin',  // L atau P
+        'tanggal_masuk',  // Opsional
     ];
 
-    public function kelas()
-    {
-        return $this->belongsTo(Kelas::class);
-    }
-
-    public function waliMurid()
+    /**
+     * Relasi: Setiap Siswa PASTI punya satu Wali Murid
+     */
+    public function wali()
     {
         return $this->belongsTo(WaliMurid::class, 'wali_id');
     }

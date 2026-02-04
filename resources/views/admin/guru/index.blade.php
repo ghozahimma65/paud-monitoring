@@ -14,7 +14,7 @@
                 <th class="p-2">Nama Guru</th>
                 <th class="p-2">Email</th>
                 <th class="p-2">No HP</th>
-                <th class="p-2">Bidang</th>
+                <th class="p-2">Jenis Guru</th>
                 <th class="p-2">Aksi</th>
             </tr>
         </thead>
@@ -22,10 +22,19 @@
             @forelse ($gurus as $i => $guru)
             <tr class="border-b hover:bg-gray-50">
                 <td class="p-2">{{ $i + 1 }}</td>
-                <td class="p-2">{{ $guru->nama_guru ?? '-' }}</td>
+                <td class="p-2 font-medium">{{ $guru->nama_guru ?? '-' }}</td>
                 <td class="p-2">{{ $guru->email ?? '-' }}</td>
                 <td class="p-2">{{ $guru->no_hp ?? '-' }}</td>
-                <td class="p-2">{{ $guru->bidang ?? '-' }}</td>
+                <td class="p-2">
+                    {{-- Logic tampilan badge --}}
+                    @if($guru->jenis_guru == 'guru_kelas')
+                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Guru Kelas</span>
+                    @elseif($guru->jenis_guru == 'shadow_abk')
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Shadow ABK</span>
+                    @else
+                        -
+                    @endif
+                </td>
                 <td class="p-2 space-x-2">
                     <a href="{{ route('guru.edit', $guru->id) }}" class="text-blue-500 hover:underline">Edit</a>
                     <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus data ini?');">

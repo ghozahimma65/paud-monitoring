@@ -44,10 +44,10 @@
                     {{-- Kolom password (disembunyikan tapi bisa dilihat) --}}
                     <td class="p-3 border text-center">
                         <div class="relative inline-block">
-                            <input 
-                                type="password" 
-                                value="123456" 
-                                readonly 
+                            <input
+                                type="password"
+                                value="123456"
+                                readonly
                                 class="border rounded-lg px-2 py-1 text-center bg-gray-100 text-sm w-24 password-field"
                             >
                             <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 toggle-password">
@@ -59,12 +59,12 @@
                     {{-- Tombol Aksi --}}
                     <td class="p-3 border text-center space-x-2">
                         <a href="{{ route('akun.edit', $user->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</a>
-                    
+
                         <form action="{{ route('akun.reset', $user->id) }}" method="POST" class="inline">
                             @csrf
                             <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Reset</button>
                         </form>
-                    
+
                         <form action="{{ route('akun.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin mau hapus akun ini?')" class="inline">
                             @csrf
                             @method('DELETE')

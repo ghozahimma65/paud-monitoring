@@ -6,30 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-    Schema::create('siswas', function (Blueprint $table) {
-    $table->id();
-    $table->string('nama');
-    $table->string('nis')->unique();
-    $table->date('tanggal_lahir');
-    $table->unsignedBigInteger('kelas_id');
-    $table->unsignedBigInteger('wali_id');
-    $table->string('foto')->nullable();
-    $table->timestamps();
-
-    $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
-    $table->foreign('wali_id')->references('id')->on('wali_murids')->onDelete('cascade');
-});
+        Schema::create('siswas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('wali_id')->constrained('wali_murids')->onDelete('cascade');
+            
+            $table->string('nama_siswa'); // Sesuai PDF "Nama Anak"
+            $table->string('tempat_lahir'); // Sesuai PDF "Tempat"
+            $table->date('tanggal_lahir');  // Sesuai PDF "Tgl Lahir"
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->date('tanggal_masuk')->nullable();
+            
+            $table->timestamps();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('siswas');
     }

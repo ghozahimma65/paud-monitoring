@@ -9,12 +9,11 @@ class Guru extends Model
 {
     use HasFactory;
 
-    // kasih tahu Laravel kalau nama tabelnya "guru", bukan "gurus"
-    protected $table = 'guru';
+    protected $table = 'guru'; // Sesuai DB kamu
 
     protected $fillable = [
-        'nama',
-        'jenis_guru',
+        'nama_guru',  // SEBELUMNYA 'nama' (SALAH), HARUS 'nama_guru'
+        'jenis_guru', // SEBELUMNYA 'jenis_guru' (SUDAH BENAR TAPI INPUT FORM SALAH)
         'no_hp',
         'email',
         'user_id',

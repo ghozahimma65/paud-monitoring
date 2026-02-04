@@ -6,25 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('wali_murids', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            
+            $table->string('nama_wali'); // Sesuai PDF "Nama Orang Tua"
+            $table->string('no_hp')->nullable();
+            $table->text('alamat')->nullable(); // Sesuai PDF "Alamat"
             $table->string('pekerjaan')->nullable();
-            $table->string('alamat')->nullable();
-            $table->decimal('lokasi_lat', 10, 7)->nullable();
-            $table->decimal('lokasi_lng', 10, 7)->nullable();
+            
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('wali_murids');
     }

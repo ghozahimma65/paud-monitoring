@@ -10,51 +10,66 @@ class WaliMuridController extends Controller
 {
     public function index()
     {
-        $wali_murids = WaliMurid::orderBy('created_at', 'desc')->get();
-        return view('admin.wali_murid.index', compact('wali_murids'));
+        $walis = WaliMurid::latest()->get();
+        return view('admin.wali.index', compact('walis'));
     }
 
     public function create()
     {
-        return view('admin.wali_murid.create');
+        return view('admin.wali.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nama_wali' => 'required|string|max:100',
-            'email' => 'nullable|email|max:100',
-            'no_hp' => 'nullable|string|max:20',
-            'alamat' => 'nullable|string|max:255',
+            'no_hp'     => 'nullable|string|max:20',
+            'alamat'    => 'nullable|string',
         ]);
-    
-        WaliMurid::create($request->only(['nama_wali', 'email', 'no_hp', 'alamat']));
-    
-        return redirect()->route('wali-murid.index')->with('success', 'Data wali murid berhasil ditambahkan.');
-    }
-    public function edit(WaliMurid $wali_murid)
-    {
-        return view('admin.wali_murid.edit', compact('wali_murid'));
+
+        WaliMurid::create($request->all());
+
+        return redirect()->route('wali-murid.index')->with('success', 'Data Wali Murid berhasil ditambahkan.');
     }
 
-    public function update(Request $request, WaliMurid $wali_murid)
+    public function edit($id)
     {
+        $wali = WaliMurid::findOrFail($id);
+        return view('admin.wali.edit', compact('wali'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $wali = WaliMurid::findOrFail($id);
+        
         $request->validate([
             'nama_wali' => 'required|string|max:100',
-            'email' => 'nullable|email|max:100',
-            'no_hp' => 'nullable|string|max:20',
-            'alamat' => 'nullable|string|max:255',
+            'no_hp'     => 'nullable|string|max:20',
+            'alamat'    => 'nullable|string',
         ]);
 
-        $wali_murid->update($request->all());
+        $wali->update($request->all());
 
-        return redirect()->route('wali-murid.index')->with('success', 'Data wali murid berhasil diperbarui.');
+        return redirect()->route('wali-murid.index')->with('success', 'Data Wali Murid berhasil diperbarui.');
     }
 
-    public function destroy(WaliMurid $wali_murid)
+    public function destroy($id)
     {
-        $wali_murid->delete();
+        $wali = WaliMurid::findOrFail($id);
 
-        return redirect()->route('wali-murid.index')->with('success', 'Data wali murid berhasil dihapus.');
+        // --- LOGIC AMAN (Mencegah Error Database) ---
+        // Cek apakah wali ini punya anak didik (siswa)
+        // Pastikan di Model WaliMurid sudah ada relasi: public function siswas()
+        $jumlah_siswa = $wali->siswas()->count();
+
+        if ($jumlah_siswa > 0) {
+            // Jika masih punya siswa, BATALKAN hapus & beri pesan Error
+            return redirect()->route('wali-murid.index')->with('error', '❌ Gagal Hapus! Wali ini masih terhubung dengan ' . $jumlah_siswa . ' data Siswa. Hapus atau pindahkan data siswanya dulu.');
+        }
+
+        // Jika tidak punya siswa, baru boleh dihapus
+        $wali->delete();
+        
+        return redirect()->route('wali-murid.index')->with('success', '✅ Data Wali Murid berhasil dihapus.');
     }
 }

@@ -8,13 +8,18 @@
         @csrf
 
         <div class="mb-4">
-            <label class="block text-gray-700">Nama</label>
+            <label class="block text-gray-700">Nama Guru</label>
+            {{-- Name harus 'nama_guru', bukan 'nama' --}}
             <input type="text" name="nama_guru" class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300" required>
         </div>
 
         <div class="mb-4">
-            <label class="block text-gray-700">Bidang</label>
-            <input type="text" name="bidang" class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300">
+            <label class="block text-gray-700">Jenis Guru</label>
+            {{-- Ganti input text 'bidang' jadi Select 'jenis_guru' sesuai Enum DB --}}
+            <select name="jenis_guru" class="w-full border rounded px-3 py-2 focus:ring focus:ring-green-300">
+                <option value="guru_kelas">Guru Kelas</option>
+                <option value="shadow_abk">Shadow ABK</option>
+            </select>
         </div>
 
         <div class="mb-4">
