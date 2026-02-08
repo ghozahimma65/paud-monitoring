@@ -1,53 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-white shadow-md rounded-lg p-6 max-w-xl mx-auto">
-    <h1 class="text-xl font-semibold text-gray-700 mb-4">✏️ Edit Data Wali Murid</h1>
+<div class="bg-white shadow-md rounded-lg p-6 max-w-xl mx-auto mt-10">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-xl font-bold text-gray-700">✏️ Edit Wali Murid</h1>
+        <a href="{{ route('wali-murid.index') }}" class="text-gray-500 hover:text-gray-700">&larr; Kembali</a>
+    </div>
 
-    <form action="{{ route('wali-murid.update', $wali_murid->id) }}" method="POST">
+    @if ($errors->any())
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+            <p class="font-bold">Gagal Menyimpan:</p>
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- KITA PAKAI VARIABEL $data (Sesuai Controller) --}}
+    <form action="{{ route('wali-murid.update', $data->id) }}" method="POST">
         @csrf
         @method('PUT')
-
-        <!-- Nama Wali -->
+    
         <div class="mb-4">
-            <label class="block text-gray-700 font-medium">Nama Wali</label>
-            <input type="text" name="nama_wali" 
-                   value="{{ old('nama_wali', $wali_murid->nama_wali) }}"
-                   class="w-full border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500">
+            <label class="block text-gray-700 font-medium mb-1">Nama Wali</label>
+            <input type="text" name="nama_wali"
+                   value="{{ old('nama_wali', $data->nama_wali) }}"
+                   class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none" 
+                   required>
         </div>
 
-        <!-- Email -->
         <div class="mb-4">
-            <label class="block text-gray-700 font-medium">Email</label>
+            <label class="block text-gray-700 font-medium mb-1">Email (Login)</label>
+            {{-- Gunakan $data->user --}}
             <input type="email" name="email" 
-                   value="{{ old('email', $wali_murid->email) }}"
-                   class="w-full border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500">
+                   value="{{ old('email', $data->user?->email ?? '') }}" 
+                   class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none" 
+                   placeholder="Email belum didaftarkan">
         </div>
-
-        <!-- No HP -->
+    
         <div class="mb-4">
-            <label class="block text-gray-700 font-medium">No HP</label>
+            <label class="block text-gray-700 font-medium mb-1">No HP</label>
             <input type="text" name="no_hp" 
-                   value="{{ old('no_hp', $wali_murid->no_hp) }}"
-                   class="w-full border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500">
+                   value="{{ old('no_hp', $data->no_hp) }}" 
+                   class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none">
         </div>
 
-        <!-- Alamat -->
         <div class="mb-4">
-            <label class="block text-gray-700 font-medium">Alamat</label>
+            <label class="block text-gray-700 font-medium mb-1">Alamat</label>
             <textarea name="alamat" rows="3"
-                      class="w-full border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500">{{ old('alamat', $wali_murid->alamat) }}</textarea>
+                      class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none">{{ old('alamat', $data->alamat) }}</textarea>
         </div>
 
-        <!-- Tombol -->
         <div class="flex justify-end mt-6 gap-3">
-            <a href="{{ route('wali-murid.index') }}" 
-               class="bg-gray-500 text-white px-5 py-2 rounded hover:bg-gray-600 transition">
-                Batal
-            </a>
-            <button type="submit"
-                    class="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition">
-                Perbarui
+            <button type="submit" 
+                    class="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition duration-200 shadow-md">
+                💾 Simpan Perubahan
             </button>
         </div>
     </form>

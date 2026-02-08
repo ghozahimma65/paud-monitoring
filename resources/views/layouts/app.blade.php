@@ -46,8 +46,8 @@
                 </ul>
             </div>
 
-            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
-                <i class="fas fa-bus mr-3"></i> Penjemputan
+            <a href="{{ route('penjemputan.index') }}" class="flex items-center ...">
+                <i class="fas fa-bus me-2"></i> Penjemputan
             </a>
         </nav>
     </aside>
