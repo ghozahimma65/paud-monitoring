@@ -10,71 +10,61 @@ use Illuminate\Http\Request;
 class RapotController extends Controller
 {
     public function create($siswa_id)
-        {
-            $siswa = \App\Models\Siswa::findOrFail($siswa_id);
-            
-            // PERBAIKAN: Ambil data dari Model 'Guru', bukan 'User'
-            // Kita ambil semua guru, diurutkan berdasarkan nama
-            $gurus = \App\Models\Guru::orderBy('nama_guru', 'asc')->get();
-    
-            return view('admin.rapot.create', compact('siswa', 'gurus'));
-        }
+    {
+        $siswa = Siswa::findOrFail($siswa_id);
+        return view('admin.rapot.create', compact('siswa'));
+    }
 
-    // 2. SIMPAN DATA RAPOT KE DATABASE
     public function store(Request $request, $siswa_id)
-        {
-            $request->validate([
-                'semester' => 'required',
-                'tahun_ajaran' => 'required',
-                'tanggal_rapot' => 'required|date',
-                'nama_guru' => 'required',
-                'nama_kepala_sekolah' => 'required',
-            ]);
-    
-            Rapot::create([
-                'siswa_id' => $siswa_id,
-                'semester' => $request->semester,
-                'tahun_ajaran' => $request->tahun_ajaran,
-                'tanggal_rapot' => $request->tanggal_rapot,
-    
-                // Urutan A-E Sesuai PDF
-                'narasi_aik' => $request->narasi_aik,
-                'narasi_nilai_agama' => $request->narasi_nilai_agama,
-                'narasi_jati_diri' => $request->narasi_jati_diri,
-                'narasi_literasi' => $request->narasi_literasi,
-                'narasi_kokurikuler' => $request->narasi_kokurikuler, // Kolom Baru
-    
-                // Fisik & Kehadiran
-                'tinggi_badan' => $request->tinggi_badan,
-                'berat_badan' => $request->berat_badan,
-                'lingkar_kepala' => $request->lingkar_kepala,
-                'lingkar_lengan' => $request->lingkar_lengan,
-                'sakit' => $request->sakit ?? 0,
-                'izin' => $request->izin ?? 0,
-                'alpha' => $request->alpha ?? 0,
-    
-                // Refleksi & TTD
-                'refleksi_orang_tua' => $request->refleksi_orang_tua,
-                'nama_guru' => $request->nama_guru,
-                'nama_kepala_sekolah' => $request->nama_kepala_sekolah,
-                'nbm_kepala_sekolah' => $request->nbm_kepala_sekolah,
-            ]);
-    
-            return redirect()->route('perkembangan.show', $siswa_id)
-                             ->with('success', 'Rapot berhasil dibuat!');
-        }
+    {
+        $request->validate([
+            'tahun_ajaran' => 'required',
+            'semester' => 'required',
+            'tanggal_rapot' => 'required|date',
+            'narasi_agama' => 'required',
+            'narasi_budi_pekerti' => 'required',
+            'narasi_jati_diri' => 'required',
+            'narasi_literasi' => 'required',
+            'narasi_kokurikuler' => 'required', // E Wajib
+        ]);
 
-    // 3. LIHAT DETAIL RAPOT (PREVIEW SEBELUM CETAK)
+        Rapot::create([
+            'siswa_id' => $siswa_id,
+            'tahun_ajaran' => $request->tahun_ajaran,
+            'semester' => $request->semester,
+            'tanggal_rapot' => $request->tanggal_rapot,
+
+            // Narasi A-E
+            'narasi_agama' => $request->narasi_agama,
+            'narasi_budi_pekerti' => $request->narasi_budi_pekerti,
+            'narasi_jati_diri' => $request->narasi_jati_diri,
+            'narasi_literasi' => $request->narasi_literasi,
+            'narasi_kokurikuler' => $request->narasi_kokurikuler,
+
+            // TTD & Refleksi
+            'refleksi_orang_tua' => $request->refleksi_orang_tua,
+            'nama_guru' => $request->nama_guru,
+            'nipy_guru' => $request->nipy_guru,
+            'nama_kepala_sekolah' => $request->nama_kepala_sekolah,
+            'nipy_kepala_sekolah' => $request->nipy_kepala_sekolah,
+
+            // Fisik
+            'tinggi_badan' => $request->tinggi_badan,
+            'berat_badan' => $request->berat_badan,
+            'lingkar_kepala' => $request->lingkar_kepala,
+            'sakit' => $request->sakit ?? 0,
+            'izin' => $request->izin ?? 0,
+            'alpha' => $request->alpha ?? 0,
+        ]);
+
+        return redirect()->route('perkembangan.show', $siswa_id)->with('success', 'Rapot Berhasil Dibuat!');
+    }
+
     public function show($id)
     {
         $rapot = Rapot::with('siswa')->findOrFail($id);
         return view('admin.rapot.show', compact('rapot'));
     }
-
-    // 4. CETAK PDF (Nanti kita bahas fitur ini)
-    public function print($id)
-    {
-        $rapot = Rapot::with('siswa')->findOrFail($id);
-        return view('admin.rapot.print', compact('rapot'));
-    }
+    
+    // Edit & Update bisa menyesuaikan strukturnya sama dengan Store
 }

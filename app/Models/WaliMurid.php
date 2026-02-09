@@ -9,22 +9,17 @@ class WaliMurid extends Model
 {
     use HasFactory;
 
-    protected $table = 'wali_murids'; // Default laravel biasanya plural
+    // Nama tabel di database kamu (Sesuai screenshot)
+    protected $table = 'wali_murids';
 
-    protected $fillable = [
-        'user_id',
-        'nama_wali', // Pastikan kolom di DB 'nama_wali', bukan 'nama'
-        'no_hp',
-        'alamat',
-        'pekerjaan', // Opsional, jaga-jaga kalau butuh
-    ];
+    // ✅ JURUS OPEN GATE: Izinkan semua data masuk (Alamat, Pekerjaan, dll)
+    protected $guarded = [];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
     
-    // Relasi ke Siswa (Satu wali bisa punya banyak anak)
     public function siswas()
     {
         return $this->hasMany(Siswa::class, 'wali_id');

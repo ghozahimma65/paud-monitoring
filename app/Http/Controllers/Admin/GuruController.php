@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Guru;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller
 {
@@ -20,19 +23,41 @@ class GuruController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validasi disesuaikan dengan kolom database
-        $request->validate([
-            'nama_guru'  => 'required|string|max:100',
-            'email'      => 'nullable|email|max:100',
-            'no_hp'      => 'nullable|string|max:20',
-            'jenis_guru' => 'required|in:guru_kelas,shadow_abk', // UBAH 'bidang' JADI 'jenis_guru'
-        ]);
-
-        Guru::create($request->all());
-
-        return redirect()->route('guru.index')->with('success', 'Data guru berhasil ditambahkan.');
-    }
+        {
+            // 1. Validasi
+            $request->validate([
+                'nama_guru' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6',
+            ]);
+    
+            DB::transaction(function () use ($request) {
+                
+                // A. SIMPAN KE TABEL USERS (Disini tempatnya Email & Password)
+                $user = User::create([
+                    'name' => $request->nama_guru,
+                    'email' => $request->email, 
+                    'password' => Hash::make($request->password), 
+                    'role' => 'guru',
+                ]);
+    
+                // B. SIMPAN KE TABEL GURU (HANYA DATA PROFIL)
+                Guru::create([
+                    'user_id' => $user->id,
+                    'nama_guru' => $request->nama_guru,
+                    'nip' => $request->nip,
+                    'jenis_guru' => $request->jenis_guru, // Pastikan kolom ini ada di tabel guru kamu
+                    'no_hp' => $request->no_hp,
+                    'alamat' => $request->alamat,
+                    
+                    // ❌ JANGAN ADA baris 'email' => ... disini
+                    // ❌ JANGAN ADA baris 'password' => ... disini
+                ]);
+                
+            });
+    
+            return redirect()->route('guru.index')->with('success', 'Berhasil menambahkan Guru!');
+        }
 
     public function edit($id)
         {

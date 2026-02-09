@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
             $table->string('nis')->nullable();
-            $table->string('nama');
+            $table->string('nama_siswa');
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->date('tanggal_lahir')->nullable();
             

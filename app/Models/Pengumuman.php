@@ -9,7 +9,8 @@ class Pengumuman extends Model
 {
     use HasFactory;
 
-    protected $table = 'pengumuman'; // <- perbaikan disini
+    // Karena nama tabelnya 'pengumuman' (bukan pengumumans)
+    protected $table = 'pengumuman';
 
     protected $fillable = [
         'judul',
@@ -18,5 +19,11 @@ class Pengumuman extends Model
         'tanggal_selesai',
         'status',
     ];
-}
 
+    // Casting agar tanggal otomatis jadi Carbon (bisa diformat tgl-bln-thn)
+    protected $casts = [
+        'tanggal_mulai' => 'date',
+        'tanggal_selesai' => 'date',
+        'status' => 'boolean',
+    ];
+}

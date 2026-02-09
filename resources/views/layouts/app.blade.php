@@ -10,54 +10,52 @@
 
     <!-- Sidebar -->
     <aside class="w-64 bg-green-600 text-white min-h-screen p-6 shadow-xl">
-        <h2 class="text-2xl font-bold mb-10">Simpaud Kartoharjo</h2>
-
-        <nav class="space-y-4 text-sm">
-            <a href="{{ route('dashboard') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
-                <i class="fas fa-home mr-3"></i> Home
-            </a>
-
-            <div>
-                <p class="font-semibold uppercase text-xs mb-2">Data Master</p>
-                <ul class="ml-4 space-y-1">
-                    <li><a href="{{ route('guru.index') }}" class="block p-2 hover:bg-green-700 rounded">👨‍🏫 Guru</a></li>
-                    <li><a href="{{ route('wali-murid.index') }}"class="block p-2 hover:bg-green-700 rounded">👪 Wali Murid</a></li>
-                    <li><a href="{{ route('siswa.index') }}" class="block p-2 hover:bg-green-700 rounded">🧒 Peserta Didik</a></li>
-                </ul>
-            </div>
-
-<a href="{{ route('admin.perkembangan.index') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
-    <i class="fas fa-chart-line mr-3"></i> Laporan Perkembangan
-</a>
-
-            <a href="{{ route('pengumuman.index') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
-                <i class="fas fa-bullhorn mr-3"></i> Menu Pengumuman
-            </a>
-
-            <div>
-                <p class="font-semibold uppercase text-xs mb-2">Menu Akun</p>
-                <ul class="ml-4 space-y-1">
-                    <li>
-                        <a href="{{ route('akun.index') }}" 
-                           class="block p-2 hover:bg-green-700 rounded">
-                           👥 Manajemen Akun
+            <h2 class="text-2xl font-bold mb-10">Simpaud Kartoharjo</h2>
+    
+            <nav class="space-y-4 text-sm">
+                <a href="{{ route('dashboard') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
+                    <i class="fas fa-home mr-3"></i> Home
+                </a>
+    
+                @if(auth()->user()->role == 'admin')
+                <div>
+                    <p class="font-semibold uppercase text-xs mb-2 text-green-200">Data Master</p>
+                    <ul class="ml-4 space-y-1">
+                        <li><a href="{{ route('guru.index') }}" class="block p-2 hover:bg-green-700 rounded text-white">👨‍🏫 Guru</a></li>
+                        <li><a href="{{ route('wali-murid.index') }}" class="block p-2 hover:bg-green-700 rounded text-white">👪 Wali Murid</a></li>
+                        <li><a href="{{ route('siswa.index') }}" class="block p-2 hover:bg-green-700 rounded text-white">🧒 Peserta Didik</a></li>
+                    </ul>
+                </div>
+                @endif
+    
+                <div>
+                    <p class="font-semibold uppercase text-xs mb-2 text-green-200">Laporan & Info</p>
+                    <div class="space-y-1">
+                        <a href="{{ route('admin.perkembangan.index') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
+                            <i class="fas fa-chart-line mr-3"></i> Laporan Perkembangan
                         </a>
-                    </li>
-                </ul>
-            </div>
-
-            <a href="{{ route('penjemputan.index') }}" class="flex items-center ...">
-                <i class="fas fa-bus me-2"></i> Penjemputan
-            </a>
-        </nav>
-    </aside>
+    
+                        @if(auth()->user()->role == 'admin')
+                        <a href="{{ route('pengumuman.index') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
+                            <i class="fas fa-bullhorn mr-3"></i> Menu Pengumuman
+                        </a>
+                        @endif
+    
+                        <a href="{{ route('penjemputan.index') }}" class="flex items-center p-2 rounded-lg hover:bg-green-700 transition">
+                            <i class="fas fa-bus mr-3"></i> Penjemputan
+                        </a>
+                    </div>
+                </div>
+    
+                </nav>
+        </aside>
 
     <!-- Main Content -->
     <div class="flex-1 flex flex-col">
         
         <!-- Navbar -->
         <header class="flex items-center justify-between bg-white px-6 py-4 shadow">
-            <h1 class="text-lg font-semibold">Hai, Admin 👋</h1>
+            Hai, {{ Auth::user()->name }}
             <div class="flex items-center space-x-4">
                 <input type="text" placeholder="Search Class, Documents, Activities..." 
                        class="px-4 py-2 rounded-lg border focus:ring-2 focus:ring-green-400 w-72 text-sm">

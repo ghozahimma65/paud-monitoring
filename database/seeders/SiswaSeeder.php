@@ -12,7 +12,7 @@ class SiswaSeeder extends Seeder
         // Data diambil dari CSV yang kamu kirim (Sample 5 Siswa dulu biar cepat)
         $siswas = [
             [
-                'nama' => 'Abdila Kaivan Baihaqi Alzafa',
+                'nama_siswa' => 'Abdila Kaivan Baihaqi Alzafa', // SUDAH DIPERBAIKI (nama -> nama_siswa)
                 'nis' => '2024247',
                 'jenis_kelamin' => 'L',
                 'tanggal_lahir' => '2018-03-10',
@@ -20,7 +20,7 @@ class SiswaSeeder extends Seeder
                 'kelompok_id' => 1
             ],
             [
-                'nama' => 'Hanifah Syafi\'a', // Pakai backslash (\) sebelum tanda petik satu
+                'nama_siswa' => 'Hanifah Syafi\'a',
                 'nis' => '2024268',
                 'jenis_kelamin' => 'P',
                 'tanggal_lahir' => '2019-05-12',
@@ -28,7 +28,7 @@ class SiswaSeeder extends Seeder
                 'kelompok_id' => 1
             ],
             [
-                'nama' => 'Abrizam Rafka Danindra',
+                'nama_siswa' => 'Abrizam Rafka Danindra',
                 'nis' => '2024271',
                 'jenis_kelamin' => 'L',
                 'tanggal_lahir' => '2019-07-15',
@@ -36,7 +36,7 @@ class SiswaSeeder extends Seeder
                 'kelompok_id' => 1
             ],
             [
-                'nama' => 'Achazia Nakhi Shankara',
+                'nama_siswa' => 'Achazia Nakhi Shankara',
                 'nis' => '222285',
                 'jenis_kelamin' => 'L',
                 'tanggal_lahir' => '2021-03-30',
@@ -44,7 +44,7 @@ class SiswaSeeder extends Seeder
                 'kelompok_id' => 1
             ],
             [
-                'nama' => 'Ahmad Farzan Wisanggeni',
+                'nama_siswa' => 'Ahmad Farzan Wisanggeni',
                 'nis' => '2023233',
                 'jenis_kelamin' => 'L',
                 'tanggal_lahir' => '2019-01-10',

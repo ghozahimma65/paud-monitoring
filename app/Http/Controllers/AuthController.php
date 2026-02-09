@@ -12,26 +12,36 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-   public function login(Request $request)
-{
-    $credentials = $request->only('email', 'password');
-
-    if (Auth::guard('web')->attempt($credentials)) {
-    $request->session()->regenerate();
-    return redirect()->intended('/dashboard');on()->regenerate();
-
-        // cek role di sini
-        if (Auth::user()->role === 'admin') {
-            return redirect()->intended('/dashboard');
-        } else {
-            Auth::logout();
-            return back()->with('error', 'Hanya admin yang bisa login di website.');
+    public function login(Request $request)
+        {
+            // 1. Ambil input email & password
+            $credentials = $request->only('email', 'password');
+    
+            // 2. Coba Login
+            if (Auth::guard('web')->attempt($credentials)) {
+                $request->session()->regenerate();
+    
+                // --- 🛡️ SATPAM (LOGIKA BLOKIR) ---
+                
+                // Cek Role User yang baru saja login
+                $user = Auth::user();
+    
+                // Jika role-nya 'wali_murid', TOLAK!
+                if ($user->role === 'wali_murid') {
+                    Auth::logout(); // Logout paksa
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+    
+                    return back()->with('error', 'Maaf, Wali Murid hanya bisa login lewat Aplikasi Android!');
+                }
+    
+                // Jika Admin ATAU Guru, lolos ke Dashboard
+                return redirect()->intended('/dashboard');
+            }
+    
+            // 3. Kalau email atau password salah
+            return back()->with('error', 'Username atau password salah!');
         }
-    }
-
-    // kalau email atau password salah
-    return back()->with('error', 'Username atau password salah!');
-}
 public function logout(Request $request)
 {
     Auth::logout();

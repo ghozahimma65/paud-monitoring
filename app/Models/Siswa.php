@@ -17,4 +17,19 @@ class Siswa extends Model
     {
         return $this->belongsTo(WaliMurid::class, 'wali_murid_id');
     }
+    
+    public function anekdots()
+    {
+        return $this->hasMany(Anekdot::class, 'siswa_id');
+    }
+    
+    public function hasilKaryas()
+    {
+        return $this->hasMany(HasilKarya::class, 'siswa_id');
+    }
+    
+    public function penilaianCeklis()
+        {
+            return $this->hasMany(PenilaianCeklis::class, 'siswa_id');
+        }
 }

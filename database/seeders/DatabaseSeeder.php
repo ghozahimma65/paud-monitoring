@@ -29,6 +29,14 @@ class DatabaseSeeder extends Seeder
             SiswaSeeder::class,     // Data Siswa (Fixed)
         ]);
         
+        // 2. Buat Akun GURU (Contoh: Bu Dwi)
+                User::create([
+                    'name' => 'Dwi Lestari, S.Pd',
+                    'email' => 'guru@gmail.com',
+                    'password' => Hash::make('password'),
+                    'role' => 'guru',
+                ]);
+        
         // CATATAN: Jangan panggil MasterSeeder lagi karena kodenya usang.
     }
 }

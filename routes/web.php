@@ -10,6 +10,9 @@ use App\Http\Controllers\Admin\PengumumanController;
 use App\Http\Controllers\Admin\PerkembanganController;
 use App\Http\Controllers\Admin\AkunController;
 use App\Http\Controllers\Admin\PenjemputanController;
+use App\Http\Controllers\Admin\AnekdotController;
+use App\Http\Controllers\Admin\HasilKaryaController;
+use App\Http\Controllers\Admin\PenilaianCeklisController;
 
 // Login routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -55,7 +58,18 @@ Route::middleware('auth')->group(function () {
         Route::delete('/penjemputan/{id}', [PenjemputanController::class, 'destroy'])->name('penjemputan.destroy');
         
         // === ROUTE RAPOT ===
+        // 
+        Route::get('/anekdot/create/{siswa}', [App\Http\Controllers\Admin\AnekdotController::class, 'create'])->name('anekdot.create');
+        Route::post('/admin/anekdot/store/{siswa}', [App\Http\Controllers\Admin\AnekdotController::class, 'store'])->name('anekdot.store');
+        
+        Route::get('/hasil-karya/create/{siswa}', [App\Http\Controllers\Admin\HasilKaryaController::class, 'create'])->name('hasil-karya.create');
+        Route::post('/hasil-karya/store/{siswa}', [App\Http\Controllers\Admin\HasilKaryaController::class, 'store'])->name('hasil-karya.store');
+        
+        Route::get('/ceklis/create/{siswa}', [PenilaianCeklisController::class, 'create'])->name('ceklis.create');
+        Route::post('/ceklis/store/{siswa}', [PenilaianCeklisController::class, 'store'])->name('ceklis.store');
             // Form Input Rapot Baru
+            // 
+            // 
             Route::get('/siswa/{id}/rapot/create', [App\Http\Controllers\Admin\RapotController::class, 'create'])->name('rapot.create');
             
             // Simpan Data Rapot

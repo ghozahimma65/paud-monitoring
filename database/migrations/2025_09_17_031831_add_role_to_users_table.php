@@ -9,21 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->enum('role', ['admin','guru','wali'])->default('wali');
-        $table->string('phone')->nullable();
-    });
-}
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
-    }
+     public function up()
+     {
+         Schema::table('users', function (Blueprint $table) {
+             // Defaultnya 'admin' biar aman, atau 'guru'
+             $table->string('role')->default('guru')->after('email'); 
+         });
+     }
+     
+     public function down()
+     {
+         Schema::table('users', function (Blueprint $table) {
+             $table->dropColumn('role');
+         });
+     }
 };

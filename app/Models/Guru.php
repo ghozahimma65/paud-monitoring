@@ -9,15 +9,13 @@ class Guru extends Model
 {
     use HasFactory;
 
-    protected $table = 'guru'; // Sesuai DB kamu
+    protected $table = 'guru'; // ✅ Sudah Benar (Sesuai tabelmu)
 
-    protected $fillable = [
-        'nama_guru',  // SEBELUMNYA 'nama' (SALAH), HARUS 'nama_guru'
-        'jenis_guru', // SEBELUMNYA 'jenis_guru' (SUDAH BENAR TAPI INPUT FORM SALAH)
-        'no_hp',
-        'email',
-        'user_id',
-    ];
+    // ❌ HAPUS variable $fillable yang lama
+    
+    // ✅ PAKAI INI SAJA (Jurus Anti Ribet)
+    // Artinya: Izinkan semua data masuk ke database
+    protected $guarded = []; 
 
     public function user()
     {
