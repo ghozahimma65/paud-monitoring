@@ -9,13 +9,19 @@ class Siswa extends Model
 {
     use HasFactory;
 
-    // Pastikan guarded kosong biar semua kolom bisa diisi
     protected $guarded = [];
 
     // Relasi ke Wali Murid
     public function wali_murid()
     {
         return $this->belongsTo(WaliMurid::class, 'wali_murid_id');
+    }
+
+    // TAMBAHKAN INI: Relasi ke Kelompok/Kelas
+    public function kelompok()
+    {
+        // Ganti 'Kelas' jika nama model kelas kamu berbeda
+        return $this->belongsTo(Kelas::class, 'kelompok_id');
     }
     
     public function anekdots()
@@ -29,7 +35,7 @@ class Siswa extends Model
     }
     
     public function penilaianCeklis()
-        {
-            return $this->hasMany(PenilaianCeklis::class, 'siswa_id');
-        }
+    {
+        return $this->hasMany(PenilaianCeklis::class, 'siswa_id');
+    }
 }

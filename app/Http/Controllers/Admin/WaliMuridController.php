@@ -57,6 +57,44 @@ class WaliMuridController extends Controller
         return redirect()->route('wali-murid.index')->with('success', 'Berhasil! Akun Wali Murid siap digunakan.');
     }
 
+    public function edit($id)
+    {
+        $data = WaliMurid::with('user')->findOrFail($id);
+        return view('admin.wali.edit', compact('data'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $wali = WaliMurid::findOrFail($id);
+
+        $request->validate([
+            'nama_wali' => 'required',
+            'email'     => 'required|email|unique:users,email,' . $wali->user_id,
+            'no_hp'     => 'required',
+        ]);
+
+        DB::transaction(function () use ($request, $wali) {
+            
+            // 1. Update User Login
+            if ($wali->user) {
+                $wali->user->update([
+                    'name'     => $request->nama_wali,
+                    'email'    => $request->email,
+                ]);
+            }
+
+            // 2. Update Profil Wali
+            $wali->update([
+                'nama_wali' => $request->nama_wali,
+                'no_hp'     => $request->no_hp,
+                'alamat'    => $request->alamat,
+                // 'pekerjaan' => $request->pekerjaan, // Form belum ada input pekerjaan
+            ]);
+        });
+
+        return redirect()->route('wali-murid.index')->with('success', 'Data Wali Murid berhasil diperbarui');
+    }
+
     public function destroy($id)
     {
         $wali = WaliMurid::findOrFail($id);
