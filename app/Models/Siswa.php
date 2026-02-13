@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Kelas;
 
 class Siswa extends Model
 {
@@ -20,8 +21,9 @@ class Siswa extends Model
     // TAMBAHKAN INI: Relasi ke Kelompok/Kelas
     public function kelompok()
     {
-        // Ganti 'Kelas' jika nama model kelas kamu berbeda
-        return $this->belongsTo(Kelas::class, 'kelompok_id');
+        // 2. Hubungkan ke Model 'Kelas'
+        // 3. Pakai kunci 'kelas_id' (sesuai yang ada di file Kelas.php kamu)
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
     
     public function anekdots()

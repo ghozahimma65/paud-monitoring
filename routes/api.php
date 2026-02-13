@@ -25,13 +25,14 @@ Route::get('/pengumuman', [PengumumanController::class, 'index']); // Info Sekol
 
 // --- KHUSUS WALI MURID (Lihat Data) ---
 // Wali melihat daftar anaknya
-Route::get('/siswa-saya', [SiswaController::class, 'index']); 
+ 
 // ==========================================
 // 2. AREA TERKUNCI (BUTUH TOKEN)
 // ==========================================
 Route::middleware('auth:sanctum')->group(function () {
     
     // --- UMUM ---
+    Route::get('/siswa-saya', [SiswaController::class, 'index']); // Pindah ke sini biar bisa baca Auth::user()
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', function (Request $request) { 
         return $request->user(); // Cek siapa yang login
@@ -49,4 +50,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/guru/anekdot', [GuruController::class, 'storeAnekdot']);
     Route::post('/guru/karya', [GuruController::class, 'storeKarya']);
     Route::post('/guru/penjemputan', [GuruController::class, 'storePenjemputan']);
+    Route::post('/guru/ceklis', [GuruController::class, 'storeCeklis']);
 });

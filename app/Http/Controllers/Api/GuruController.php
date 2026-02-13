@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Anekdot;
 use App\Models\HasilKarya;
 use App\Models\Penjemputan;
+use App\Models\PenilaianCeklis;
 use Illuminate\Support\Facades\Storage;
 
 class GuruController extends Controller
@@ -56,6 +57,34 @@ class GuruController extends Controller
         ]);
 
         return response()->json(['success' => true, 'message' => 'Karya berhasil disimpan']);
+    }
+
+    public function storeCeklis(Request $request)
+    {
+        // Validasi disesuaikan dengan struktur tabel penilaian_ceklis kamu
+        $request->validate([
+            'siswa_id'  => 'required|exists:siswas,id',
+            'tanggal'   => 'required|date',
+            'indikator' => 'required|string',
+            'hasil'     => 'required|in:BB,MB,BSH,BSB', // Validasi skala PAUD
+            'keterangan'=> 'nullable|string',
+        ]);
+
+        // Simpan data ke database
+        $ceklis = PenilaianCeklis::create([
+            'siswa_id'  => $request->siswa_id,
+            'guru_id'   => $request->user()->id, // Ambil ID dari Guru yang login
+            'tanggal'   => $request->tanggal,
+            'indikator' => $request->indikator,
+            'hasil'     => $request->hasil,
+            'keterangan'=> $request->keterangan,
+        ]);
+
+        return response()->json([
+            'success' => true, 
+            'message' => 'Penilaian Ceklis berhasil disimpan',
+            'data'    => $ceklis
+        ], 201);
     }
 
     // 3. Input Penjemputan (Scan QR)
