@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\SiswaController;
 use App\Http\Controllers\Api\PengumumanController;
 use App\Http\Controllers\Api\LaporanController;
 use App\Http\Controllers\Api\GuruController;
+use App\Http\Controllers\Api\PenjemputanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +52,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/guru/karya', [GuruController::class, 'storeKarya']);
     Route::post('/guru/penjemputan', [GuruController::class, 'storePenjemputan']);
     Route::post('/guru/ceklis', [GuruController::class, 'storeCeklis']);
+
+    // RUTE PENJEMPUTAN BARU
+    Route::post('/penjemputan', [PenjemputanController::class, 'store']);
 });
+
