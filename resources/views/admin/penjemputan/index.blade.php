@@ -33,15 +33,15 @@
                     <tr class="hover:bg-blue-50 transition duration-150 group">
                         <td class="p-4 whitespace-nowrap">
                             <div class="text-gray-800 font-semibold">
-                                {{ \Carbon\Carbon::parse($log->waktu_jemput)->format('H:i') }} WIB
+                                {{ \Carbon\Carbon::parse($log->waktu_jemput)->timezone('Asia/Jakarta')->format('H:i') }} WIB
                             </div>
                             <div class="text-xs text-gray-500">
-                                {{ \Carbon\Carbon::parse($log->waktu_jemput)->format('d M Y') }}
+                                {{ \Carbon\Carbon::parse($log->waktu_jemput)->timezone('Asia/Jakarta')->format('d M Y') }}
                             </div>
                         </td>
                         
                         <td class="p-4">
-                            <div class="font-bold text-gray-800">{{ $log->siswa->nama ?? 'Siswa Terhapus' }}</div>
+                            <div class="font-bold text-gray-800">{{ $log->siswa->nama_siswa ?? 'Siswa Terhapus' }}</div>
                             <div class="text-xs text-gray-500">NIS: {{ $log->siswa->nis ?? '-' }}</div>
                         </td>
 

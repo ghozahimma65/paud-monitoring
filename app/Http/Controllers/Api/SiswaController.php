@@ -19,7 +19,7 @@ class SiswaController extends Controller
         if ($user->role == 'guru') {
             // --- JIKA GURU ---
             // Ambil SEMUA data siswa (untuk menu "Data Kelas")
-            $siswa = Siswa::with(['wali_murid', 'kelompok'])->latest()->get();
+            $siswa = Siswa::with(['wali_murid', 'kelompok', 'anekdots'])->latest()->get();
 
         } else {
             // --- JIKA WALI MURID ---

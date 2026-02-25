@@ -8,6 +8,7 @@ use App\Models\Anekdot;
 use App\Models\HasilKarya;
 use App\Models\Penjemputan;
 use App\Models\PenilaianCeklis;
+use App\Models\Siswa;
 use Illuminate\Support\Facades\Storage;
 
 class GuruController extends Controller
@@ -29,6 +30,13 @@ class GuruController extends Controller
         Anekdot::create($data);
 
         return response()->json(['success' => true, 'message' => 'Anekdot berhasil disimpan']);
+    }
+
+    // Ambil Riwayat Anekdot yang dibuat oleh Guru yang login
+    public function getAnekdot(Request $request)
+    {
+        $data = Anekdot::with('siswa')->where('guru_id', $request->user()->id)->latest()->get();
+        return response()->json(['success' => true, 'data' => $data]);
     }
 
     // 2. Input Hasil Karya (Upload Foto)
@@ -111,5 +119,39 @@ class GuruController extends Controller
         ]);
 
         return response()->json(['success' => true, 'message' => 'Data penjemputan tercatat']);
+    }
+
+    // 4. Scan QR Penjemputan
+    public function scanJemput(Request $request)
+    {
+        $request->validate([
+            'qr_code' => 'required',
+        ]);
+
+        // Cari siswa berdasarkan qr_code (Biasanya NIS atau ID Siswa)
+        $siswa = Siswa::where('nis', $request->qr_code)
+                      ->orWhere('id', $request->qr_code)
+                      ->first();
+
+        if (!$siswa) {
+            return response()->json([
+                'success' => false,
+                'message' => 'QR Code tidak valid! Data siswa tidak ditemukan.'
+            ], 404);
+        }
+
+        // Catat Penjemputan
+        // Kita bisa atur default nama penjemput "Orang Tua/Wali"
+        Penjemputan::create([
+            'siswa_id' => $siswa->id,
+            'nama_penjemput' => 'Orang Tua / Wali', 
+            'status_hubungan' => 'Orang Tua',
+            'waktu_jemput' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil mencatat penjemputan untuk ' . $siswa->nama_lengkap
+        ]);
     }
 }

@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // --- KHUSUS GURU (Input Data) ---
     // Nanti kalau Guru login di HP untuk input data:
+    Route::get('/guru/anekdot', [GuruController::class, 'getAnekdot']); // TAMBAHAN INI
     Route::post('/guru/anekdot', [GuruController::class, 'storeAnekdot']);
     Route::post('/guru/karya', [GuruController::class, 'storeKarya']);
     Route::post('/guru/penjemputan', [GuruController::class, 'storePenjemputan']);
@@ -55,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // RUTE PENJEMPUTAN BARU
     Route::post('/penjemputan', [PenjemputanController::class, 'store']);
+    Route::post('/guru/scan-jemput', [GuruController::class, 'scanJemput']);
 
     Route::get('/rute-astar', [AStarController::class, 'cariRute']);
 

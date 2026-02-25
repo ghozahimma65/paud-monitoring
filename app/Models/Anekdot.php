@@ -22,4 +22,9 @@ class Anekdot extends Model
         'analisis_capaian',
         'foto',
     ];
+
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class);
+    }
 }

@@ -9,12 +9,11 @@ class PengumumanController extends Controller
 {
     public function index()
     {
-        // Sementara kita return array kosong dulu atau contoh data
+        $data = \App\Models\Pengumuman::where('status', true)->latest()->get();
+
         return response()->json([
             'success' => true,
-            'data'    => [
-                ['judul' => 'Libur Nasional', 'isi' => 'Besok sekolah libur ya bunda.'],
-            ]
+            'data'    => $data
         ]);
     }
 }
