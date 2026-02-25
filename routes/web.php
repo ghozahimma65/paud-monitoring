@@ -82,4 +82,30 @@ Route::middleware('auth')->group(function () {
             Route::get('/rapot/{id}/print', [App\Http\Controllers\Admin\RapotController::class, 'print'])->name('rapot.print');
     });
 
+    Route::get('/sinkron-kordinat', function () {
+    // Ambil data dari ID 4 sampai akhir (karena ID 1-3 itu PAUD dan Simpang)
+    $titikRumah = DB::table('titik_jalans')->where('id', '>=', 4)->get();
+    $berhasil = 0;
+
+    foreach ($titikRumah as $titik) {
+        // Hilangkan kata "Rumah " biar sisa nama siswanya aja
+        $namaSiswa = str_replace('Rumah ', '', $titik->nama_titik);
+        $namaSiswa = trim($namaSiswa);
+
+        // Update latitude & longitude di tabel siswas yang namanya mirip
+        $update = DB::table('siswas')
+            ->where('nama_siswa', 'LIKE', '%' . $namaSiswa . '%')
+            ->update([
+                'latitude' => $titik->latitude,
+                'longitude' => $titik->longitude
+            ]);
+            
+        if($update) {
+            $berhasil++;
+        }
+    }
+
+    return "Selesai Bosku! Berhasil menyinkronkan $berhasil data koordinat siswa!";
+});
+
 });

@@ -32,7 +32,10 @@ class SiswaController extends Controller
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:L,P',
             'wali_murid_id' => 'required|exists:wali_murids,id',
-            // Alamat dihapus, karena ikut Wali Murid
+            
+            // --- TAMBAHAN BARU: Validasi Titik Koordinat Peta ---
+            'latitude'      => 'nullable|string',
+            'longitude'     => 'nullable|string',
         ]);
 
         Siswa::create([
@@ -43,6 +46,10 @@ class SiswaController extends Controller
             'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
             'wali_murid_id' => $request->wali_murid_id,
+            
+            // --- TAMBAHAN BARU: Simpan ke Database ---
+            'latitude'      => $request->latitude,
+            'longitude'     => $request->longitude,
         ]);
 
         return redirect()->route('siswa.index')->with('success', 'Data Siswa berhasil ditambahkan.');
@@ -67,6 +74,10 @@ class SiswaController extends Controller
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:L,P',
             'wali_murid_id' => 'required|exists:wali_murids,id',
+            
+            // --- TAMBAHAN BARU: Validasi Titik Koordinat Peta ---
+            'latitude'      => 'nullable|string',
+            'longitude'     => 'nullable|string',
         ]);
 
         $siswa->update([
@@ -77,6 +88,10 @@ class SiswaController extends Controller
             'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
             'wali_murid_id' => $request->wali_murid_id,
+            
+            // --- TAMBAHAN BARU: Update ke Database ---
+            'latitude'      => $request->latitude,
+            'longitude'     => $request->longitude,
         ]);
 
         return redirect()->route('siswa.index')->with('success', 'Data Siswa berhasil diperbarui!');

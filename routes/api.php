@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\PengumumanController;
 use App\Http\Controllers\Api\LaporanController;
 use App\Http\Controllers\Api\GuruController;
 use App\Http\Controllers\Api\PenjemputanController;
+use App\Http\Controllers\Api\AStarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,6 @@ Route::get('/pengumuman', [PengumumanController::class, 'index']); // Info Sekol
 
 // --- KHUSUS WALI MURID (Lihat Data) ---
 // Wali melihat daftar anaknya
- 
 // ==========================================
 // 2. AREA TERKUNCI (BUTUH TOKEN)
 // ==========================================
@@ -55,5 +55,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // RUTE PENJEMPUTAN BARU
     Route::post('/penjemputan', [PenjemputanController::class, 'store']);
+
+    Route::get('/rute-astar', [AStarController::class, 'cariRute']);
+
 });
 
