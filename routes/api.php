@@ -27,6 +27,8 @@ Route::get('/pengumuman', [PengumumanController::class, 'index']); // Info Sekol
 
 // --- KHUSUS WALI MURID (Lihat Data) ---
 // Wali melihat daftar anaknya
+use App\Http\Controllers\Api\WaliController;
+
 // ==========================================
 // 2. AREA TERKUNCI (BUTUH TOKEN)
 // ==========================================
@@ -45,10 +47,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/karya', [LaporanController::class, 'getKarya']);
     Route::get('/penjemputan', [LaporanController::class, 'getPenjemputan']);
 
+    // --- KHUSUS WALI MURID ---
+    Route::get('/wali/dashboard', [WaliController::class, 'getDashboard']);
 
     // --- KHUSUS GURU (Input Data) ---
     // Nanti kalau Guru login di HP untuk input data:
     Route::get('/guru/anekdot', [GuruController::class, 'getAnekdot']); // TAMBAHAN INI
+    Route::get('/guru/karya', [GuruController::class, 'getKarya']);
+    Route::get('/guru/ceklis', [GuruController::class, 'getCeklis']);
     Route::post('/guru/anekdot', [GuruController::class, 'storeAnekdot']);
     Route::post('/guru/karya', [GuruController::class, 'storeKarya']);
     Route::post('/guru/penjemputan', [GuruController::class, 'storePenjemputan']);

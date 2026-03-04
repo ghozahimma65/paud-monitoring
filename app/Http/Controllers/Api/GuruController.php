@@ -39,6 +39,26 @@ class GuruController extends Controller
         return response()->json(['success' => true, 'data' => $data]);
     }
 
+    // Ambil Riwayat Hasil Karya yang dibuat oleh Guru yang login
+    public function getKarya(Request $request)
+    {
+        $data = HasilKarya::with('siswa')->where('guru_id', $request->user()->id)->latest()->get();
+        
+        $data->transform(function ($item) {
+            $item->foto_url = $item->foto ? asset('storage/' . $item->foto) : null;
+            return $item;
+        });
+
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+
+    // Ambil Riwayat Ceklis yang dibuat oleh Guru yang login
+    public function getCeklis(Request $request)
+    {
+        $data = PenilaianCeklis::with('siswa')->where('guru_id', $request->user()->id)->latest()->get();
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+
     // 2. Input Hasil Karya (Upload Foto)
     public function storeKarya(Request $request)
     {
