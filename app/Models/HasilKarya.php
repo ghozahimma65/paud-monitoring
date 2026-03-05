@@ -19,4 +19,9 @@ class HasilKarya extends Model
         'deskripsi_foto', // Pastikan ini sama persis dengan DB
         'analisis_capaian'
     ];
+
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class);
+    }
 }

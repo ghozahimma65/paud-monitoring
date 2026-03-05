@@ -49,6 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // --- KHUSUS WALI MURID ---
     Route::get('/wali/dashboard', [WaliController::class, 'getDashboard']);
+    Route::get('/wali/riwayat-anak/{id}', [WaliController::class, 'getRiwayatAnak']);
+    Route::get('/wali/rapot-anak/{id}', [WaliController::class, 'getRapotAnak']);
 
     // --- KHUSUS GURU (Input Data) ---
     // Nanti kalau Guru login di HP untuk input data:
@@ -59,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/guru/karya', [GuruController::class, 'storeKarya']);
     Route::post('/guru/penjemputan', [GuruController::class, 'storePenjemputan']);
     Route::post('/guru/ceklis', [GuruController::class, 'storeCeklis']);
+    Route::post('/guru/rapot', [GuruController::class, 'storeRapot']);
 
     // RUTE PENJEMPUTAN BARU
     Route::post('/penjemputan', [PenjemputanController::class, 'store']);

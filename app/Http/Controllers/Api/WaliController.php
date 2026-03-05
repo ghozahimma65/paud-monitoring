@@ -60,17 +60,9 @@ class WaliController extends Controller
         $progressPerkembangan = [];
 
         foreach ($aspekList as $aspek) {
-            // Filter ceklis yang nama indikatornya mengandung kata kunci aspek
-            // Karena nama indikator di database bisa bervariasi, kita buat mapping persentase sederhana
-            // Nilai: BM=25%, MB=50%, BSH=75%, BSB=100%
-            $ceklisAspek = $ceklis->filter(function($item) use ($aspek) {
-                // Di sistem riil, indikator harus punya relasi 'aspek'. 
-                // Karena disini plain text, kita simulasi ambil rata-rata secara mock atau jika ada kategori.
-                // Disini kita akan buat dummy fallback atau mock calculation per siswa untuk UI Showcase.
-                return true; 
-            })->random(min($ceklis->count(), 2)); 
+            // Murni kalkulasi berdasarkan data riil yang match aspeknya
+            $ceklisAspek = $ceklis->where('aspek_perkembangan', $aspek); 
             
-            // Kalkulasi real-ish:
             $totalScore = 0;
             $count = 0;
             foreach ($ceklisAspek as $c) {
@@ -81,13 +73,19 @@ class WaliController extends Controller
                 $count++;
             }
 
-            $percentage = $count > 0 ? round($totalScore / $count) : 0; // fallback ke 0 jika blm ada nilai
+            // Murni kalkulasi berdasarkan data riil, 0 jika kosong
+            $percentage = $count > 0 ? round($totalScore / $count) : 0; 
 
             $progressPerkembangan[] = [
                 'aspek' => $aspek,
                 'nilai' => $percentage
             ];
         }
+
+        // 5. Relasi data penjemputan terakhir
+        $penjemputanTerakhir = \App\Models\Penjemputan::where('siswa_id', $siswa->id)
+            ->latest()
+            ->first();
 
         // Return Data
         return response()->json([
@@ -98,10 +96,92 @@ class WaliController extends Controller
                     'nis' => $siswa->nis,
                     'nama' => $siswa->nama_siswa,
                     'kelas' => $siswa->kelompok->nama_kelompok ?? '-',
+                    'foto' => $siswa->foto ?? null,
                 ],
                 'pengumuman' => $pengumuman,
-                'progress' => $progressPerkembangan
+                'progress' => $progressPerkembangan,
+                'penjemputan_terakhir' => $penjemputanTerakhir
             ]
+        ], 200);
+    }
+
+    // --- KHUSUS WALI MURID: Riwayat Penilaian Anak Spesifik (PRIVASI) ---
+    public function getRiwayatAnak($id)
+    {
+        $user = Auth::user();
+        
+        // 1. Dapatkan Profil Wali
+        $wali = WaliMurid::where('user_id', $user->id)->first();
+        if (!$wali) {
+            return response()->json(['success' => false, 'message' => 'Profil Wali Murid tidak ditemukan'], 404);
+        }
+
+        // 2. Pastikan Siswa yang diminta benar-benar anak dari wali ini (Keamanan Privasi)
+        $siswa = Siswa::where('id', $id)->where('wali_murid_id', $wali->id)->first();
+        if (!$siswa) {
+            return response()->json(['success' => false, 'message' => 'Anda tidak memiliki akses ke data siswa ini'], 403);
+        }
+
+        // 3. Ambil Semua Data Riwayat Khusus Anak Ini Saja
+        $anekdot = \App\Models\Anekdot::with('siswa')
+            ->where('siswa_id', $siswa->id)
+            ->latest()
+            ->get();
+            
+        $ceklis = PenilaianCeklis::with('siswa')
+            ->where('siswa_id', $siswa->id)
+            ->latest()
+            ->get();
+            
+        $karya = \App\Models\HasilKarya::with('siswa')
+            ->where('siswa_id', $siswa->id)
+            ->latest()
+            ->get()
+            ->map(function ($item) {
+                if ($item->foto) {
+                    $item->foto_url = url('storage/' . $item->foto);
+                }
+                return $item;
+            });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'anekdot' => $anekdot,
+                'ceklis' => $ceklis,
+                'karya' => $karya
+            ]
+        ], 200);
+    }
+
+    // --- KHUSUS WALI MURID: Rapot Penilaian Anak (Semester) ---
+    public function getRapotAnak($id)
+    {
+        $user = Auth::user();
+        
+        $wali = WaliMurid::where('user_id', $user->id)->first();
+        if (!$wali) {
+            return response()->json(['success' => false, 'message' => 'Profil Wali Murid tidak ditemukan'], 404);
+        }
+
+        $siswa = Siswa::where('id', $id)->where('wali_murid_id', $wali->id)->first();
+        if (!$siswa) {
+            return response()->json(['success' => false, 'message' => 'Anda tidak memiliki akses ke data siswa ini'], 403);
+        }
+
+        // Ambil SEMUA riwayat rapot untuk siswa ini
+        $rapots = \App\Models\Rapot::with('siswa')
+            ->where('siswa_id', $siswa->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if ($rapots->isEmpty()) {
+            return response()->json(['status' => 'error', 'message' => 'Rapot belum tersedia'], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $rapots
         ], 200);
     }
 }

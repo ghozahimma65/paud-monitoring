@@ -15,6 +15,7 @@ class PenilaianCeklis extends Model
     protected $fillable = [
         'siswa_id',
         'guru_id',
+        'aspek_perkembangan', // Kolom aspek_perkembangan
         'indikator', // Sekarang sudah jadi teks
         'tanggal',
         'hasil',     // Ingat, di database kamu namanya 'hasil'

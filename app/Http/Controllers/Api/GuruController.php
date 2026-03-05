@@ -13,6 +13,68 @@ use Illuminate\Support\Facades\Storage;
 
 class GuruController extends Controller
 {
+    // Input Rapot Guru Mobile
+    public function storeRapot(Request $request)
+    {
+        $request->validate([
+            'siswa_id' => 'required',
+            'semester' => 'required|string',
+            'tahun_ajaran' => 'required|string',
+            'nilai_aik' => 'required|string',
+            'nilai_budi_pekerti' => 'required|string',
+            'nilai_jati_diri' => 'required|string',
+            'nilai_literasi_steam' => 'required|string',
+            'nilai_kokurikuler' => 'required|string',
+            // 'catatan_guru' => 'nullable|string', // Admin Rapot model does not have catatan_guru
+            'tinggi_badan' => 'required|numeric',
+            'berat_badan' => 'required|numeric',
+            'lingkar_kepala' => 'required|numeric',
+            'sakit' => 'required|numeric',
+            'izin' => 'required|numeric',
+            'alpha' => 'required|numeric',
+        ]);
+
+        try {
+            // Gunakan Model Rapot (sesuai Web Admin)
+            $rapot = new \App\Models\Rapot();
+            $rapot->siswa_id = $request->siswa_id;
+            $rapot->semester = $request->semester;
+            $rapot->tahun_ajaran = $request->tahun_ajaran;
+            $rapot->tanggal_rapot = now()->format('Y-m-d');
+            
+            // Map ke kolom Model Rapot
+            $rapot->narasi_agama = $request->nilai_aik;
+            $rapot->narasi_budi_pekerti = $request->nilai_budi_pekerti;
+            $rapot->narasi_jati_diri = $request->nilai_jati_diri;
+            $rapot->narasi_literasi = $request->nilai_literasi_steam;
+            $rapot->narasi_kokurikuler = $request->nilai_kokurikuler;
+            
+            $rapot->tinggi_badan = $request->tinggi_badan;
+            $rapot->berat_badan = $request->berat_badan;
+            $rapot->lingkar_kepala = $request->lingkar_kepala;
+            $rapot->sakit = $request->sakit;
+            $rapot->izin = $request->izin;
+            $rapot->alpha = $request->alpha;
+            
+            // Default Guru name from logged in user if available
+            $rapot->nama_guru = auth()->user()->name ?? 'Guru PAUD';
+            
+            $rapot->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Rapot berhasil disimpan',
+                'data' => $rapot
+            ], 201);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menyimpan rapot: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     // 1. Input Catatan Anekdot
     public function storeAnekdot(Request $request)
     {
@@ -91,21 +153,23 @@ class GuruController extends Controller
     {
         // Validasi disesuaikan dengan struktur tabel penilaian_ceklis kamu
         $request->validate([
-            'siswa_id'  => 'required|exists:siswas,id',
-            'tanggal'   => 'required|date',
-            'indikator' => 'required|string',
-            'hasil'     => 'required|in:BB,MB,BSH,BSB', // Validasi skala PAUD
-            'keterangan'=> 'nullable|string',
+            'siswa_id'           => 'required|exists:siswas,id',
+            'tanggal'            => 'required|date',
+            'aspek_perkembangan' => 'required|string',
+            'indikator'          => 'required|string',
+            'hasil'              => 'required|in:BB,MB,BSH,BSB', // Validasi skala PAUD
+            'keterangan'         => 'nullable|string',
         ]);
 
         // Simpan data ke database
         $ceklis = PenilaianCeklis::create([
-            'siswa_id'  => $request->siswa_id,
-            'guru_id'   => $request->user()->id, // Ambil ID dari Guru yang login
-            'tanggal'   => $request->tanggal,
-            'indikator' => $request->indikator,
-            'hasil'     => $request->hasil,
-            'keterangan'=> $request->keterangan,
+            'siswa_id'           => $request->siswa_id,
+            'guru_id'            => $request->user()->id, // Ambil ID dari Guru yang login
+            'tanggal'            => $request->tanggal,
+            'aspek_perkembangan' => $request->aspek_perkembangan,
+            'indikator'          => $request->indikator,
+            'hasil'              => $request->hasil,
+            'keterangan'         => $request->keterangan,
         ]);
 
         return response()->json([
