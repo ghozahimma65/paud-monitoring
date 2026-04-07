@@ -1,31 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-white shadow-md rounded-lg p-6">
-    <div class="flex justify-between items-center mb-4">
-        <h1 class="text-xl font-semibold text-gray-700">👪 Data Wali Murid</h1>
-        <a href="{{ route('wali-murid.create') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+ Tambah Wali</a>
+<div class="bg-white shadow-md rounded-2xl border border-[#e1f0e8] overflow-hidden">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-gradient-to-br from-green-600 to-teal-700 p-8 shadow-inner relative overflow-hidden">
+        <!-- Decorative inner pattern -->
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+        <div class="relative z-10">
+            <h1 class="text-2xl font-extrabold text-white flex items-center drop-shadow">
+                <span class="bg-white/20 text-white p-2.5 rounded-xl mr-4 backdrop-blur-md"><i class="fas fa-users"></i></span> Data Wali Murid
+            </h1>
+            <p class="text-green-50 mt-2 ml-14 font-medium drop-shadow-sm">Kelola informasi orang tua / wali peserta didik.</p>
+        </div>
+        <div class="mt-6 md:mt-0 relative z-10">
+            <a href="{{ route('wali-murid.create') }}" class="inline-flex items-center gap-2 bg-white text-green-700 px-6 py-3 rounded-xl hover:bg-green-50 font-bold text-sm shadow-lg transition-all hover:-translate-y-1">
+                <i class="fas fa-plus"></i> Tambah Wali
+            </a>
+        </div>
     </div>
 
-    {{-- TAMBAHAN: Alert Merah untuk Error --}}
-    @if(session('error'))
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-        <strong class="font-bold">Error!</strong>
-        <span class="block sm:inline">{{ session('error') }}</span>
-    </div>
-    @endif
+    <div class="p-6">
+        {{-- Alert Merah untuk Error --}}
+        @if(session('error'))
+        <div class="bg-red-50/50 border border-red-200 text-red-700 p-4 mb-6 rounded-xl flex items-center shadow-sm" role="alert">
+            <i class="fas fa-exclamation-circle mr-3 text-xl text-red-500"></i>
+            <div>
+                <strong class="font-bold block">Error!</strong>
+                <span>{{ session('error') }}</span>
+            </div>
+        </div>
+        @endif
 
-    {{-- Alert Hijau untuk Sukses --}}
-    @if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-        <strong class="font-bold">Sukses!</strong>
-        <span class="block sm:inline">{{ session('success') }}</span>
-    </div>
-    @endif
+        {{-- Alert Hijau untuk Sukses --}}
+        @if(session('success'))
+        <div class="bg-green-50/50 border border-green-200 text-green-700 p-4 mb-6 rounded-xl flex items-center shadow-sm" role="alert">
+            <i class="fas fa-check-circle mr-3 text-xl text-green-500"></i>
+            <p class="font-medium">{{ session('success') }}</p>
+        </div>
+        @endif
 
-    <table class="w-full border-collapse">
-        <thead>
-            <tr class="bg-green-600 text-white text-left">
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-green-600 text-white text-left">
                 <th class="p-2">No</th>
                 <th class="p-2">Nama Wali</th>
                 <th class="p-2">No HP</th>
@@ -56,5 +73,7 @@
             @endforelse
         </tbody>
     </table>
+        </div>
+    </div>
 </div>
 @endsection

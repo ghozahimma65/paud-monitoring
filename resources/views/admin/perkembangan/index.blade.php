@@ -25,7 +25,6 @@
                     <th class="py-3 px-4 text-left uppercase font-semibold text-sm">No</th>
                     <th class="py-3 px-4 text-left uppercase font-semibold text-sm">NIS</th>
                     <th class="py-3 px-4 text-left uppercase font-semibold text-sm">Nama Siswa</th>
-                    <th class="py-3 px-4 text-center uppercase font-semibold text-sm">Kelompok</th>
                     <th class="py-3 px-4 text-center uppercase font-semibold text-sm">Aksi</th>
                 </tr>
             </thead>
@@ -43,10 +42,6 @@
                     <td class="py-3 px-4 font-medium text-gray-900">
                         {{ $siswa->nama_siswa }}
                     </td>
-                    
-                    <td class="py-3 px-4 text-center">
-                        {{ $siswa->kelompok_id ?? '-' }}
-                    </td>
 
                     <td class="py-3 px-4 text-center">
                         {{-- PERBAIKAN: Hapus 'admin.' jadi 'perkembangan.show' --}}
@@ -57,7 +52,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center py-8 text-gray-500">
+                    <td colspan="4" class="text-center py-8 text-gray-500">
                         <div class="flex flex-col items-center">
                             <span class="text-4xl mb-2">📭</span>
                             <p>Belum ada data siswa.</p>
