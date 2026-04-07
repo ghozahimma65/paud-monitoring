@@ -1,0 +1,1 @@
+<?php try { $db = new PDO('mysql:host=127.0.0.1;dbname=paud_monitoring;port=3306', 'root', '', [PDO::ATTR_TIMEOUT => 3, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); echo 'Koneksi Sukses!'; } catch (Exception $e) { echo 'Error: ' . $e->getMessage(); } ?>

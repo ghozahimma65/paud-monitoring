@@ -1,59 +1,57 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4">
-    
-    <div class="flex flex-col md:flex-row justify-between items-center mb-6 mt-6">
+<div class="bg-white shadow-md rounded-2xl p-6 border border-[#e1f0e8]">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b border-[#e1f0e8] pb-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">🛵 Log Penjemputan</h1>
-            <p class="text-gray-500 text-sm mt-1">Daftar riwayat penjemputan siswa (Real-time).</p>
+            <h1 class="text-2xl font-extrabold text-gray-800 flex items-center">
+                <span class="bg-green-100 text-green-700 p-2 rounded-xl mr-3"><i class="fas fa-bus"></i></span> Log Penjemputan
+            </h1>
+            <p class="text-sm text-gray-500 mt-1 ml-12">Daftar riwayat penjemputan siswa (Real-time).</p>
         </div>
         
-        <div class="flex gap-3">
-            <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-semibold border border-blue-100">
-                Hari Ini: {{ $logs->where('waktu_jemput', '>=', now()->today())->count() }}
-            </div>
+        <div class="mt-4 md:mt-0 flex items-center bg-green-50 text-green-800 px-4 py-2.5 rounded-xl font-bold text-sm border border-green-100 shadow-sm">
+            <i class="fas fa-calendar-day mr-2 text-green-500"></i> Hari Ini: {{ $logs->where('waktu_jemput', '>=', now()->today())->count() }}
         </div>
     </div>
 
-    <div class="bg-white shadow-md rounded-xl overflow-hidden border border-gray-100">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-gray-100 text-gray-600 uppercase text-xs tracking-wider border-b border-gray-200">
-                        <th class="p-4 font-bold">Waktu Jemput</th>
-                        <th class="p-4 font-bold">Nama Siswa</th>
-                        <th class="p-4 font-bold">Nama Penjemput</th>
-                        <th class="p-4 font-bold text-center">Status Hubungan</th>
-                        <th class="p-4 font-bold text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-50">
-                    @forelse($logs as $log)
-                    <tr class="hover:bg-blue-50 transition duration-150 group">
-                        <td class="p-4 whitespace-nowrap">
-                            <div class="text-gray-800 font-semibold">
-                                {{ \Carbon\Carbon::parse($log->waktu_jemput)->timezone('Asia/Jakarta')->format('H:i') }} WIB
-                            </div>
-                            <div class="text-xs text-gray-500">
-                                {{ \Carbon\Carbon::parse($log->waktu_jemput)->timezone('Asia/Jakarta')->format('d M Y') }}
-                            </div>
-                        </td>
-                        
-                        <td class="p-4">
-                            <div class="font-bold text-gray-800">{{ $log->siswa->nama_siswa ?? 'Siswa Terhapus' }}</div>
-                            <div class="text-xs text-gray-500">NIS: {{ $log->siswa->nis ?? '-' }}</div>
-                        </td>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-100 text-gray-600 uppercase text-xs tracking-wider border-b border-gray-200">
+                    <th class="p-4 font-bold">Waktu Jemput</th>
+                    <th class="p-4 font-bold">Nama Siswa</th>
+                    <th class="p-4 font-bold">Nama Penjemput</th>
+                    <th class="p-4 font-bold text-center">Status Hubungan</th>
+                    <th class="p-4 font-bold text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+                @forelse($logs as $log)
+                <tr class="hover:bg-green-50/50 transition duration-150 group">
+                    <td class="p-4 whitespace-nowrap">
+                        <div class="text-gray-800 font-semibold">
+                            {{ \Carbon\Carbon::parse($log->waktu_jemput)->timezone('Asia/Jakarta')->format('H:i') }} WIB
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            {{ \Carbon\Carbon::parse($log->waktu_jemput)->timezone('Asia/Jakarta')->format('d M Y') }}
+                        </div>
+                    </td>
+                    
+                    <td class="p-4">
+                        <div class="font-bold text-gray-800">{{ $log->siswa->nama_siswa ?? 'Siswa Terhapus' }}</div>
+                        <div class="text-xs text-gray-500">NIS: {{ $log->siswa->nis ?? '-' }}</div>
+                    </td>
 
-                        <td class="p-4 text-gray-700 font-medium">
-                            {{ $log->nama_penjemput }}
-                        </td>
+                    <td class="p-4 text-gray-700 font-medium">
+                        {{ $log->nama_penjemput }}
+                    </td>
 
-                        <td class="p-4 text-center">
-                            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border border-blue-200">
-                                {{ $log->status_hubungan }}
-                            </span>
-                        </td>
+                    <td class="p-4 text-center">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200 shadow-sm">
+                            {{ $log->status_hubungan }}
+                        </span>
+                    </td>
 
                         <td class="p-4 text-center">
                             <form action="{{ route('penjemputan.destroy', $log->id) }}" method="POST" onsubmit="return confirm('Hapus data log ini?');">
@@ -80,6 +78,5 @@
                 </tbody>
             </table>
         </div>
-    </div>
 </div>
 @endsection

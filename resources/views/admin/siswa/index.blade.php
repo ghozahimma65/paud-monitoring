@@ -1,21 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">👶 Data Peserta Didik</h1>
-        <a href="{{ route('siswa.create') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
-            + Tambah Siswa
-        </a>
+<div class="bg-white shadow-md rounded-2xl border border-[#e1f0e8] overflow-hidden">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-gradient-to-br from-green-600 to-teal-700 p-8 shadow-inner relative overflow-hidden">
+        <!-- Decorative inner pattern -->
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+        <div class="relative z-10">
+            <h1 class="text-2xl font-extrabold text-white flex items-center drop-shadow">
+                <span class="bg-white/20 text-white p-2.5 rounded-xl mr-4 backdrop-blur-md"><i class="fas fa-child"></i></span> Data Peserta Didik
+            </h1>
+            <p class="text-green-50 mt-2 ml-14 font-medium drop-shadow-sm">Manajemen data peserta didik PAUD.</p>
+        </div>
+        <div class="mt-6 md:mt-0 relative z-10">
+            <a href="{{ route('siswa.create') }}" class="inline-flex items-center gap-2 bg-white text-green-700 px-6 py-3 rounded-xl hover:bg-green-50 font-bold text-sm shadow-lg transition-all hover:-translate-y-1">
+                <i class="fas fa-plus"></i> Tambah Siswa
+            </a>
+        </div>
     </div>
 
+    <div class="p-6">
+
     @if(session('success'))
-    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
-        <p>{{ session('success') }}</p>
+    <div class="bg-green-50/50 border border-green-200 text-green-700 p-4 mb-6 rounded-xl flex items-center shadow-sm" role="alert">
+        <i class="fas fa-check-circle mr-3 text-xl text-green-500"></i>
+        <p class="font-medium">{{ session('success') }}</p>
     </div>
     @endif
 
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="overflow-x-auto">
         <table class="min-w-full bg-white">
             <thead class="bg-green-600 text-white">
                 <tr>
@@ -86,7 +99,8 @@
                 </tr>
                 @endforelse
             </tbody>
-        </table>
+    </table>
+    </div>
     </div>
 </div>
 @endsection

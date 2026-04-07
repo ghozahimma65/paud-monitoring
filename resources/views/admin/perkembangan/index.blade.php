@@ -1,19 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4">
-    <div class="mb-6 flex justify-between items-center">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-800">📈 Laporan Perkembangan</h1>
-            <p class="text-gray-600 text-sm mt-1">Pilih siswa untuk melihat Catatan Anekdot, Hasil Karya, dan Ceklis.</p>
+<div class="bg-white shadow-md rounded-2xl border border-[#e1f0e8] overflow-hidden">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-gradient-to-br from-green-600 to-teal-700 p-8 shadow-inner relative overflow-hidden">
+        <!-- Decorative inner pattern -->
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+        <div class="relative z-10">
+            <h1 class="text-2xl font-extrabold text-white flex items-center drop-shadow">
+                <span class="bg-white/20 text-white p-2.5 rounded-xl mr-4 backdrop-blur-md"><i class="fas fa-chart-line"></i></span> Laporan Perkembangan
+            </h1>
+            <p class="text-green-50 mt-2 ml-14 font-medium drop-shadow-sm">Pilih siswa untuk melihat Catatan Anekdot, Hasil Karya, dan Ceklis.</p>
         </div>
-        <div class="bg-green-100 text-green-800 px-4 py-2 rounded-lg font-bold text-sm">
-            Total Siswa: {{ $siswas->count() }}
+        <div class="mt-6 md:mt-0 relative z-10 flex items-center bg-white text-green-800 px-5 py-3 rounded-xl font-bold text-sm shadow-lg">
+            <i class="fas fa-users mr-2 text-green-500"></i> Total Siswa: {{ $siswas->count() }}
         </div>
     </div>
 
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <table class="min-w-full bg-white">
+    <div class="p-6">
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
             <thead class="bg-green-600 text-white">
                 <tr>
                     <th class="py-3 px-4 text-left uppercase font-semibold text-sm">No</th>
@@ -59,11 +65,12 @@
                     </td>
                 </tr>
                 @endforelse
-            </tbody>
-        </table>
+        </tbody>
+    </table>
+    </div>
     </div>
     
-    <div class="mt-4 text-center text-xs text-gray-400">
+    <div class="mt-4 pb-6 text-center text-xs text-gray-400">
         &copy; {{ date('Y') }} PAUD Aisyiyah Monitoring System
     </div>
 </div>
