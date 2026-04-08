@@ -19,10 +19,10 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Splash
+// Landing Page - Simpaud Kartoharjo (Root Route)
 Route::get('/', function () {
-    return view('splash');
-});
+    return view('landing');
+})->name('landing');
 
 Route::middleware('auth')->group(function () {
 
