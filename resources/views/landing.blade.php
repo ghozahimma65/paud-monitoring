@@ -17,8 +17,9 @@
             <img src="{{ asset('images/logo.png') }}" alt="Logo PAUD Kartoharjo" class="w-12 h-12 object-contain">
             <h1 class="text-xl font-bold text-emerald-700">Simpaud Kartoharjo</h1>
         </div>
-        <a href="{{ route('login') }}" class="px-5 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-full shadow hover:bg-emerald-700 transition">
-            Masuk Admin 🔒
+        <a href="{{ route('login') }}" class="px-5 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-full shadow hover:bg-emerald-700 transition flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            Masuk Admin
         </a>
     </nav>
 
