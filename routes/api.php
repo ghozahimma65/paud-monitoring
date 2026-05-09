@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\LaporanController;
 use App\Http\Controllers\Api\GuruController;
 use App\Http\Controllers\Api\PenjemputanController;
 use App\Http\Controllers\Api\AStarController;
+use App\Http\Controllers\Api\HomeVisitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // --- UMUM ---
     Route::get('/siswa-saya', [SiswaController::class, 'index']); // Pindah ke sini biar bisa baca Auth::user()
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/update-fcm-token', [AuthController::class, 'updateFcmToken']);
     Route::get('/user', function (Request $request) { 
         return $request->user(); // Cek siapa yang login
     });
@@ -68,6 +70,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/guru/scan-jemput', [GuruController::class, 'scanJemput']);
 
     Route::get('/rute-astar', [AStarController::class, 'cariRute']);
+
+    // RUTE HOME VISIT / ZONASI
+    Route::get('/zonasi', [HomeVisitController::class, 'getZonasi']);
+    Route::get('/home-visit/zona/{zona_id}', [HomeVisitController::class, 'getSiswaByZona']);
 
 });
 

@@ -39,6 +39,22 @@
                     <label class="block text-gray-700 font-medium mb-1">Alamat Lengkap</label>
                     <textarea name="alamat" rows="2" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none">{{ old('alamat') }}</textarea>
                 </div>
+
+                <div class="mb-2 md:col-span-2">
+                    <label class="block text-gray-700 font-medium mb-1">Zona Wilayah</label>
+                    <select name="master_zona_id" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+                        <option value="">-- Pilih Zona Wilayah --</option>
+                        @foreach ($zonas as $kategori => $zonaGroup)
+                            <optgroup label="{{ $kategori }}">
+                                @foreach ($zonaGroup as $zona)
+                                    <option value="{{ $zona->id }}" {{ old('master_zona_id') == $zona->id ? 'selected' : '' }}>
+                                        {{ $zona->nama_zona }}
+                                    </option>
+                                @endforeach
+                            </optgroup>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
 

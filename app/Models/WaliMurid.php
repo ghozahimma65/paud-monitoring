@@ -24,4 +24,9 @@ class WaliMurid extends Model
     {
         return $this->hasMany(Siswa::class, 'wali_id');
     }
+
+    public function zona()
+    {
+        return $this->belongsTo(MasterZona::class, 'master_zona_id');
+    }
 }

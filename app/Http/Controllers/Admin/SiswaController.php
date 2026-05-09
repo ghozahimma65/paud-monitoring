@@ -25,31 +25,31 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nis'           => 'required|unique:siswas,nis',
-            'nisn'          => 'nullable|string',
-            'nama_siswa'    => 'required|string|max:255',
-            'tempat_lahir'  => 'required|string',
+            'nis' => 'required|unique:siswas,nis',
+            'nisn' => 'nullable|string',
+            'nama_siswa' => 'required|string|max:255',
+            'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:L,P',
             'wali_murid_id' => 'required|exists:wali_murids,id',
-            
+
             // --- TAMBAHAN BARU: Validasi Titik Koordinat Peta ---
-            'latitude'      => 'nullable|string',
-            'longitude'     => 'nullable|string',
+            'latitude' => 'nullable|string',
+            'longitude' => 'nullable|string',
         ]);
 
         Siswa::create([
-            'nis'           => $request->nis,
-            'nisn'          => $request->nisn,
-            'nama_siswa'    => $request->nama_siswa,
-            'tempat_lahir'  => $request->tempat_lahir,
+            'nis' => $request->nis,
+            'nisn' => $request->nisn,
+            'nama_siswa' => $request->nama_siswa,
+            'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
             'wali_murid_id' => $request->wali_murid_id,
-            
+
             // --- TAMBAHAN BARU: Simpan ke Database ---
-            'latitude'      => $request->latitude,
-            'longitude'     => $request->longitude,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
 
         return redirect()->route('siswa.index')->with('success', 'Data Siswa berhasil ditambahkan.');
@@ -67,31 +67,31 @@ class SiswaController extends Controller
         $siswa = Siswa::findOrFail($id);
 
         $request->validate([
-            'nis'           => 'required|unique:siswas,nis,'.$id,
-            'nisn'          => 'nullable|string',
-            'nama_siswa'    => 'required|string|max:255',
-            'tempat_lahir'  => 'required|string',
+            'nis' => 'required|unique:siswas,nis,' . $id,
+            'nisn' => 'nullable|string',
+            'nama_siswa' => 'required|string|max:255',
+            'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:L,P',
             'wali_murid_id' => 'required|exists:wali_murids,id',
-            
+
             // --- TAMBAHAN BARU: Validasi Titik Koordinat Peta ---
-            'latitude'      => 'nullable|string',
-            'longitude'     => 'nullable|string',
+            'latitude' => 'nullable|string',
+            'longitude' => 'nullable|string',
         ]);
 
         $siswa->update([
-            'nis'           => $request->nis,
-            'nisn'          => $request->nisn,
-            'nama_siswa'    => $request->nama_siswa,
-            'tempat_lahir'  => $request->tempat_lahir,
+            'nis' => $request->nis,
+            'nisn' => $request->nisn,
+            'nama_siswa' => $request->nama_siswa,
+            'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
             'wali_murid_id' => $request->wali_murid_id,
-            
+
             // --- TAMBAHAN BARU: Update ke Database ---
-            'latitude'      => $request->latitude,
-            'longitude'     => $request->longitude,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
 
         return redirect()->route('siswa.index')->with('success', 'Data Siswa berhasil diperbarui!');

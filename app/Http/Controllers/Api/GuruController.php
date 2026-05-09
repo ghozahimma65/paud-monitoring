@@ -212,9 +212,28 @@ class GuruController extends Controller
             'qr_code' => 'required',
         ]);
 
+        $qrCodeData = $request->qr_code;
+        $parts = explode('_', $qrCodeData);
+        $idSiswa = $parts[0];
+
+        if (count($parts) > 1) {
+            $qrDate = $parts[1];
+            if ($qrDate !== date('Y-m-d')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'QR Code Kadaluarsa! Harap gunakan QR hari ini.'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Format QR Code tidak valid atau Kadaluarsa!'
+            ], 400);
+        }
+
         // Cari siswa berdasarkan qr_code (Biasanya NIS atau ID Siswa)
-        $siswa = Siswa::where('nis', $request->qr_code)
-                      ->orWhere('id', $request->qr_code)
+        $siswa = Siswa::where('nis', $idSiswa)
+                      ->orWhere('id', $idSiswa)
                       ->first();
 
         if (!$siswa) {
@@ -224,18 +243,30 @@ class GuruController extends Controller
             ], 404);
         }
 
-        // Catat Penjemputan
-        // Kita bisa atur default nama penjemput "Orang Tua/Wali"
+        // Cek request untuk nama penjemput dan status
+        $statusPenjemput = $request->status_penjemput ?? 'Orang Tua / Wali';
+
         Penjemputan::create([
             'siswa_id' => $siswa->id,
-            'nama_penjemput' => 'Orang Tua / Wali', 
-            'status_hubungan' => 'Orang Tua',
+            'nama_penjemput' => $statusPenjemput, 
+            'status_hubungan' => $statusPenjemput == 'Orang Tua' ? 'Orang Tua' : 'Diwakilkan',
             'waktu_jemput' => now(),
         ]);
 
+        // --- TRIGGER FCM NOTIFICATION KE WALI MURID ---
+        if ($siswa->waliMurid && $siswa->waliMurid->user && $siswa->waliMurid->user->fcm_token) {
+            $token = $siswa->waliMurid->user->fcm_token;
+            $namaAnak = $siswa->nama_siswa ?? $siswa->nama_lengkap ?? 'Ananda';
+            $this->sendFCMNotification(
+                "Penjemputan Berhasil",
+                "Ananda {$namaAnak} telah berhasil dijemput dan diverifikasi oleh Guru.",
+                [$token]
+            );
+        }
+
         return response()->json([
             'success' => true,
-            'message' => 'Berhasil mencatat penjemputan untuk ' . $siswa->nama_lengkap
+            'message' => 'Berhasil mencatat penjemputan untuk ' . ($siswa->nama_siswa ?? $siswa->nama_lengkap)
         ]);
     }
 }

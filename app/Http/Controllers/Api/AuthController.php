@@ -42,4 +42,25 @@ class AuthController extends Controller
         Auth::logout();
         return response()->json(['message' => 'Berhasil Logout']);
     }
+
+    public function updateFcmToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required|string'
+        ]);
+
+        $user = Auth::user();
+        if ($user) {
+            $user->update(['fcm_token' => $request->fcm_token]);
+            return response()->json([
+                'success' => true,
+                'message' => 'FCM Token updated successfully'
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Unauthenticated'
+        ], 401);
+    }
 }

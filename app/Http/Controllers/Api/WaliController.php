@@ -40,8 +40,14 @@ class WaliController extends Controller
 
         // 3. Pengumuman Aktif Terbaru
         $pengumuman = Pengumuman::where('status', true)
-            ->where('tanggal_mulai', '<=', now())
-            ->where('tanggal_selesai', '>=', now())
+            ->where(function ($query) {
+                $query->whereNull('tanggal_mulai')
+                      ->orWhereDate('tanggal_mulai', '<=', now());
+            })
+            ->where(function ($query) {
+                $query->whereNull('tanggal_selesai')
+                      ->orWhereDate('tanggal_selesai', '>=', now());
+            })
             ->latest()
             ->first();
 
@@ -76,9 +82,21 @@ class WaliController extends Controller
             // Murni kalkulasi berdasarkan data riil, 0 jika kosong
             $percentage = $count > 0 ? round($totalScore / $count) : 0; 
 
+            $predikat = "Perlu Bimbingan";
+            if ($percentage >= 76) $predikat = "Sangat Baik";
+            elseif ($percentage >= 51) $predikat = "Baik";
+            elseif ($percentage >= 26) $predikat = "Cukup";
+
+            $narasi = null;
+            if ($count > 0) {
+                $namaAnak = $siswa->nama_siswa ?? $siswa->nama_lengkap ?? 'Ananda';
+                $narasi = "Ananda {$namaAnak} telah menunjukkan perkembangan yang {$predikat} pada aspek {$aspek} dengan capaian {$percentage}%.";
+            }
+
             $progressPerkembangan[] = [
                 'aspek' => $aspek,
-                'nilai' => $percentage
+                'nilai' => $percentage,
+                'narasi' => $narasi
             ];
         }
 

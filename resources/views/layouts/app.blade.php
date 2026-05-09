@@ -197,7 +197,7 @@
                 <!-- Search Input with Icon -->
                 <div class="relative hidden md:block">
                     <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
-                    <input type="text" placeholder="Cari..." 
+                    <input type="text" id="global-search" placeholder="Cari data di tabel..." 
                            class="pl-10 pr-4 py-2 bg-gray-50/50 border border-gray-200 focus:bg-white rounded-xl w-64 text-sm transition-all focus:w-80 shadow-sm">
                 </div>
                 
@@ -224,4 +224,28 @@
     </div>
 
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('global-search');
+        if(searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+                
+                rows.forEach(row => {
+                    // Jangan sembunyikan baris "Belum ada data pesan"
+                    if(row.querySelector('td[colspan]')) return;
+                    
+                    const text = row.textContent.toLowerCase();
+                    if(text.includes(query)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        }
+    });
+</script>
 </html>

@@ -31,16 +31,26 @@
                    required>
         </div>
 
-        <div class="mb-4">
-            <label class="block text-gray-700 font-medium mb-1">Email (Login)</label>
-            {{-- Gunakan $data->user --}}
-            <input type="email" name="email" 
-                   value="{{ old('email', $data->user?->email ?? '') }}" 
-                   class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none" 
-                   placeholder="Email belum didaftarkan">
+        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 mb-6 mt-4">
+            <h2 class="text-lg font-bold text-yellow-800 mb-2 flex items-center gap-2">🔐 Pengaturan Akun Login</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">Email Login</label>
+                    <input type="email" name="email" 
+                           value="{{ old('email', $data->user?->email ?? '') }}" 
+                           class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-yellow-500 focus:outline-none" 
+                           placeholder="Email belum didaftarkan">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">Password Baru</label>
+                    <input type="password" name="password" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-yellow-500 focus:outline-none" placeholder="Kosongkan jika tidak ingin ganti">
+                    <p class="text-xs text-gray-500 mt-1">*Isi hanya jika ingin mengganti password login.</p>
+                </div>
+            </div>
         </div>
     
-        <div class="mb-4">
+        <div class="mb-4 mt-4">
             <label class="block text-gray-700 font-medium mb-1">No HP</label>
             <input type="text" name="no_hp" 
                    value="{{ old('no_hp', $data->no_hp) }}" 

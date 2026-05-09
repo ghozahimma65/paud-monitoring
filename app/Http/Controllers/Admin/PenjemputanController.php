@@ -13,7 +13,7 @@ class PenjemputanController extends Controller
     {
         // Ambil data penjemputan, urutkan dari yang paling baru (latest)
         $logs = Penjemputan::with('siswa')->latest('waktu_jemput')->get();
-        
+
         // Kirim ke tampilan
         return view('admin.penjemputan.index', compact('logs'));
     }
